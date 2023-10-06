@@ -5,10 +5,13 @@ import java.net.Socket;
 
 import player.Player;
 public class HumanPlayer extends Player{
-
+    public Socket connection;
+	public ObjectInputStream inFromClient;
+	public ObjectOutputStream outToClient;
     public HumanPlayer(int playerID, Socket connection, ObjectInputStream inFromClient, ObjectOutputStream outToClient) {
-        super(playerID, connection, inFromClient, outToClient);
-        //TODO Auto-generated constructor stub
+        super(playerID);
+        this.inFromClient = inFromClient;
+        this.outToClient = outToClient;
     }
 
 }

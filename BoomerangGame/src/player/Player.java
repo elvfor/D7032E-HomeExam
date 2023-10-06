@@ -22,7 +22,7 @@ public class Player {
 		public int regionRoundScore = 0;
 		public int finalScore = 0;
 
-    public Player(int playerID, Socket connection, ObjectInputStream inFromClient, ObjectOutputStream outToClient) {
+    public Player(int playerID) {
 	    this.playerID = playerID;
 	}
 }

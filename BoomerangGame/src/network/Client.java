@@ -9,12 +9,13 @@ import java.util.Scanner;
 public class Client {
     private final ObjectOutputStream outToServer;
     private final ObjectInputStream inFromServer;
+    private final Socket connectionSocket;
 
     public Client(String ipAddress) throws Exception {
         //Connect to server
-        Socket aSocket = new Socket(ipAddress, 2048);
-        outToServer = new ObjectOutputStream(aSocket.getOutputStream());
-        inFromServer = new ObjectInputStream(aSocket.getInputStream());
+        connectionSocket = new Socket(ipAddress, 2048);
+        outToServer = new ObjectOutputStream(connectionSocket.getOutputStream());
+        inFromServer = new ObjectInputStream(connectionSocket.getInputStream());
         String nextMessage = "";
         System.out.println("Connected to server at IP " + ipAddress);
 
@@ -31,8 +32,20 @@ public class Client {
         try{
             outToServer = new ObjectOutputStream(socket.getOutputStream());
             inFromServer = new ObjectInputStream(socket.getInputStream());
+             connectionSocket = socket;
         } catch (IOException e) {
         throw new IOException();
         }
     }
+    public ObjectInputStream getInFromServer() {
+        return inFromServer;
+    }
+
+    public ObjectOutputStream getOutToServer() {
+        return outToServer;
+    }
+    public Socket getConnectionSocket() {
+        return connectionSocket;
+    }
+
 }
