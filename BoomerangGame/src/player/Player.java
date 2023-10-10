@@ -11,16 +11,15 @@ import card.Card;
 
 public class Player {
     public int playerID;
-	    public ArrayList<String> region = new ArrayList<String>();
-	    Scanner in = new Scanner(System.in);
-	    public ArrayList<Card> nextHand = new ArrayList<Card>();
-	    public ArrayList<Card> hand = new ArrayList<Card>();
-		public ArrayList<Card> draft = new ArrayList<Card>();
-		HashMap<String, String> sites = new HashMap<String, String>(); //letter, region
-		ArrayList<HashMap<String, Integer>> rScore = new ArrayList<HashMap<String, Integer>>();
-		HashMap<String, Integer> activitiesScore = new HashMap<>();
-		public int regionRoundScore = 0;
-		public int finalScore = 0;
+	public ArrayList<String> region = new ArrayList<String>();
+	public ArrayList<Card> nextHand = new ArrayList<Card>();
+	public ArrayList<Card> hand = new ArrayList<Card>();
+	public ArrayList<Card> draft = new ArrayList<Card>();
+	HashMap<String, String> sites = new HashMap<String, String>(); //letter, region
+	ArrayList<HashMap<String, Integer>> rScore = new ArrayList<HashMap<String, Integer>>();
+	HashMap<String, Integer> activitiesScore = new HashMap<>();
+	public int regionRoundScore = 0;
+	public int finalScore = 0;
 
     public Player(int playerID) {
 	    this.playerID = playerID;

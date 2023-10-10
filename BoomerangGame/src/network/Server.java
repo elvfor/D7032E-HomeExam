@@ -22,15 +22,35 @@ public class Server {
     public void acceptClient() {
         try {
             Socket connectionSocket = serverSocket.accept();
-            Client client = new network.Client(connectionSocket);
-            connectedClients.add(client);
+            //Client client = Client(connectionSocket);
+            //connectedClients.add(client);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /*private void manageNewConnection(){
+        Client newClient;
+        try {
+            Socket socket = serverSocket.accept();
+            newClient = Client(socket);
+            clients.add(newClient);
+        } catch (IOException e) {
+        }
+
+        sendConnectionMessage(newClient);
+    }
     public List<Client> getConnectedClients() {
         return connectedClients;
-    }
+    }*/
 
+    public void disconnectClients() {
+        for (Client client : connectedClients) {
+            try {
+                client.disconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
