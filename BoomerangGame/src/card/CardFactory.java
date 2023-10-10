@@ -14,8 +14,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 //import com.google.gson.Gson;
 public class CardFactory {
-    private List<Card> cards = new ArrayList<>();
-    public List<Card> createCards(String version) throws IOException {
+    private ArrayList<Card> cards = new ArrayList<>();
+    public ArrayList<Card> createCards(String version) throws IOException {
             // Create a card based on the version
             if ("Australia".equals(version)) {
 

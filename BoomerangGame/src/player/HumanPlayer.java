@@ -5,15 +5,16 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import player.Player;
+import player.actions.IPlayerActions;
+import player.communication.IPlayerCommunication;
 public class HumanPlayer extends Player{
     //public Socket connection;
-    Scanner in = new Scanner(System.in);
-	public ObjectInputStream inFromClient;
-	public ObjectOutputStream outToClient;
-    public HumanPlayer(int playerID, ObjectInputStream inFromClient, ObjectOutputStream outToClient) {
-        super(playerID);
-        this.inFromClient = inFromClient;
-        this.outToClient = outToClient;
+    private IPlayerCommunication playerCommunication;
+    public HumanPlayer(int playerID, IPlayerActions playerActions, IPlayerCommunication playerCommunication) {
+        super(playerID, playerActions);
+        this.playerCommunication = playerCommunication;
     }
-
+    public IPlayerCommunication getPlayerCommnication(){
+        return playerCommunication;
+    }
 }

@@ -8,20 +8,65 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import card.Card;
+import player.actions.IPlayerActions;
 
 public class Player {
-    public int playerID;
-	public ArrayList<String> region = new ArrayList<String>();
-	public ArrayList<Card> nextHand = new ArrayList<Card>();
-	public ArrayList<Card> hand = new ArrayList<Card>();
-	public ArrayList<Card> draft = new ArrayList<Card>();
+	private IPlayerActions playerActions;
+    private int playerID;
+	private ArrayList<String> region = new ArrayList<String>();
+	private ArrayList<Card> nextPLayersHand = new ArrayList<Card>();
+	private ArrayList<Card> hand = new ArrayList<Card>();
+	private ArrayList<Card> draft = new ArrayList<Card>();
 	HashMap<String, String> sites = new HashMap<String, String>(); //letter, region
 	ArrayList<HashMap<String, Integer>> rScore = new ArrayList<HashMap<String, Integer>>();
 	HashMap<String, Integer> activitiesScore = new HashMap<>();
-	public int regionRoundScore = 0;
-	public int finalScore = 0;
+	private int regionRoundScore = 0;
+	private int finalScore = 0;
 
-    public Player(int playerID) {
+    public Player(int playerID, IPlayerActions playerActions) {
 	    this.playerID = playerID;
+		this.playerActions = playerActions;
 	}
+	public int getPlayerID() {
+        return playerID;
+    }
+    public IPlayerActions getPlayerActions() {
+        return playerActions;
+    }
+
+    public ArrayList<String> getRegion() {
+        return region;
+    }
+
+    public ArrayList<Card> getNextPlayersHand() {
+        return nextPLayersHand;
+    }
+
+    public ArrayList<Card> getHand() {
+        return hand;
+    }
+
+    public ArrayList<Card> getDraft() {
+        return draft;
+    }
+
+    public HashMap<String, String> getSites() {
+        return sites;
+    }
+
+    public ArrayList<HashMap<String, Integer>> getRScore() {
+        return rScore;
+    }
+
+    public HashMap<String, Integer> getActivitiesScore() {
+        return activitiesScore;
+    }
+
+    public int getRegionRoundScore() {
+        return regionRoundScore;
+    }
+
+    public int getFinalScore() {
+        return finalScore;
+    }
 }

@@ -1,6 +1,6 @@
 package card;
 
-public abstract class Card {
+public abstract class Card implements ICardFunctionalities{
     private String name, letter, region;
 	private int number;
 	public String sortMode;

@@ -10,17 +10,22 @@ import java.util.Set;
 import card.AustralianCard;
 import card.Card;
 import card.CardFactory;
-import game.GameFactory;
-import game.rules.IRules;
+import game.gameContext.GameContext;
+import game.gameContext.GameContextFactory;
+import game.logic.IGameLogic;
 import game.scoring.IScoring;
-import game.state.GameContext;
 import game.state.IGameState;
+import game.state.InitRoundState;
 import game.state.StartGame;
 import network.Client;
 import network.Server;
 import player.BotPlayer;
 import player.HumanPlayer;
 import player.Player;
+import player.actions.IPlayerActions;
+import player.actions.HumanPlayerActionsStandard;
+import player.communication.IPlayerCommunication;
+import player.communication.LocalPlayerCommunication;
 
 public class BoomerangGame{
 
@@ -39,13 +44,15 @@ public class BoomerangGame{
 
                 if(checkNrOfPlayerReq(nrOfPlayers, nrOfBots));
                 //List<Client> connectedClients = connectionSetup(nrOfPlayers, nrOfBots);
-                List<Player> players = new ArrayList<>();
+                ArrayList<Player> players = new ArrayList<>();
                 for(int i = 0; i<nrOfPlayers ; i++){
-                    HumanPlayer player = new HumanPlayer(i, null, null);
+                    IPlayerActions playerActions = new HumanPlayerActionsStandard();
+                    IPlayerCommunication playerCommunication = new LocalPlayerCommunication();
+                    HumanPlayer player = new HumanPlayer(i, playerActions, playerCommunication);
                     players.add(player);
                 }
                 for(int i = nrOfPlayers ; i<nrOfPlayers+nrOfBots ; i++){
-                    BotPlayer player = new BotPlayer(i);
+                    BotPlayer player = new BotPlayer(i, null);
                     players.add(player);
                 }
                 GameContext context = initGameContext(players, "Australia", "Standard");
@@ -79,17 +86,17 @@ public class BoomerangGame{
         // Get the list of connected clients
         System.out.println("test2");
         List<Client> connectedClients = server.getConnectedClients();
-        
+        return pls
 		return connectedClients;
     }*/
 
-    private static GameContext initGameContext(List<Player> players, String version, String rules){
-        IRules gameRules = GameFactory.createGameRules(rules);
-        IScoring scoring = GameFactory.createScoring(version);
+    private static GameContext initGameContext(ArrayList<Player> players, String version, String rules){
+        IGameLogic gameRules = GameContextFactory.createGameRules(rules);
+        IScoring scoring = GameContextFactory.createScoring(version);
         GameContext context = new GameContext();
         context.setCards(createCards(version));
         context.setPlayers(players);
-        context.setCurrentState(new StartGame());
+        context.setCurrentState(new InitRoundState());
         context.setRules(gameRules);
         context.setScoring(scoring);
         return context;
@@ -104,26 +111,26 @@ public class BoomerangGame{
             context.getCurrentState().executeAction(context);
         }
     }
-    private static List<Card> createCards(String version){
+    private static ArrayList<Card> createCards(String version){
         CardFactory cardFactory = new CardFactory();
-        List<Card> cards;
+        ArrayList<Card> cards;
         System.out.println("test");
         try {
             cards = cardFactory.createCards(version);
             for (Card card : cards) {
-            System.out.println("Card Name: " + card.getName());
+            /*System.out.println("Card Name: " + card.getName());
             System.out.println("Letter: " + card.getLetter());
             System.out.println("Region: " + card.getRegion());
-            System.out.println("Number: " + card.getNumber());
+            System.out.println("Number: " + card.getNumber());*/
             // Check if the card is an instance of AustralianCard
             if (card instanceof AustralianCard) {
                 AustralianCard australianCard = (AustralianCard) card;
-                System.out.println("Collections: " + australianCard.getCollection());
+                /*System.out.println("Collections: " + australianCard.getCollection());
                 System.out.println("Animals: " + australianCard.getAnimal());
-                System.out.println("Activities: " + australianCard.getActivity());
+                System.out.println("Activities: " + australianCard.getActivity());*/
             }
             // Print other card details as needed
-            System.out.println("--------------------------");
+            //System.out.println("--------------------------");
         }
             return cards;
         } catch (IOException e) {

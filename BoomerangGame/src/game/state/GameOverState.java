@@ -1,5 +1,7 @@
 package game.state;
 
+import game.gameContext.GameContext;
+
 public class GameOverState implements IGameState {
 
     @Override

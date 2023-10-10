@@ -1,11 +1,11 @@
-package game;
+package game.gameContext;
 
-import game.rules.IRules;
-import game.rules.standardRules;
+import game.logic.IGameLogic;
+import game.logic.standardGameLogic;
 import game.scoring.IScoring;
 import game.scoring.australiaScoring;
 
-public class GameFactory {
+public class GameContextFactory {
     public static IScoring createScoring(String version) {
         switch (version) {
             case "Australia":
@@ -18,12 +18,13 @@ public class GameFactory {
         }
     }
 
-    public static IRules createGameRules(String type) {
+    public static IGameLogic createGameRules(String type) {
         switch(type){
             case "Standard":
-                return new standardRules();
+                return new standardGameLogic();
             default:
              throw new IllegalArgumentException("Unsupported rule type: " + type);
         }
     }
+
 }
