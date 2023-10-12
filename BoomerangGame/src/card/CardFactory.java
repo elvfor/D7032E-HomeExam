@@ -9,12 +9,14 @@ import java.util.Map;
 import card.AustralianCard;
 import main.BoomerangGame;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 //import com.google.gson.Gson;
 public class CardFactory {
     private ArrayList<Card> cards = new ArrayList<>();
+    private String[] regions;
     public ArrayList<Card> createCards(String version) throws IOException {
             // Create a card based on the version
             if ("Australia".equals(version)) {
@@ -40,6 +42,20 @@ public class CardFactory {
             }
         return cards;
     }
+    public String[] createRegionsFromConfig(String version) throws IOException{
+        // Create a card based on the version
+            if ("Australia".equals(version)) {
+                JsonArray regionsJsonArray = createRegionFromConfig("../config/australianCards.JSON");
+                 Gson gson = new Gson();
+                regions = gson.fromJson(regionsJsonArray, String[].class);
+            } else if ("European".equals(version)) {
+                // Create a European card (if applicable) and add it to the list
+            } else {
+                // Handle other versions or throw an exception for unsupported versions
+                throw new IllegalArgumentException("Unsupported card version: " + version);
+            }
+        return regions;
+    }
 
     private JsonArray createJSONCardsFromConfig(String configFilePath) throws IOException{
         FileReader fileReader = new FileReader(configFilePath);
@@ -48,6 +64,15 @@ public class CardFactory {
 
         // Extract the version from the JSON
         JsonArray cardsData= (JsonArray) config.get("cards");
+        return cardsData;
+    }
+    private JsonArray createRegionFromConfig(String configFilePath) throws IOException{
+        FileReader fileReader = new FileReader(configFilePath);
+        JsonObject config = JsonParser.parseReader(fileReader).getAsJsonObject();
+        fileReader.close();
+
+        // Extract the version from the JSON
+        JsonArray cardsData= (JsonArray) config.get("regions");
         return cardsData;
     }
 }

@@ -6,8 +6,9 @@ import java.util.List;
 import card.Card;
 import player.Player;
 
-public interface IGameLogic {
-    void passCards();
+public interface IGameRules {
+    void passCards(ArrayList<Player> players);
+    void passLastCards(ArrayList<Player> players);
     void cardDraft();
     ArrayList<Card> shuffleCards(ArrayList<Card> cards);
     void dealCards(ArrayList<Card> cards, ArrayList<Player> players);

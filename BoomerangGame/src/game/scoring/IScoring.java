@@ -1,6 +1,8 @@
 package game.scoring;
 
+import player.Player;
+
 public interface IScoring {
-    void roundScore();
-    void totalScore();
+    void roundScore(Player player);
+    void totalScore(Player player);
 }

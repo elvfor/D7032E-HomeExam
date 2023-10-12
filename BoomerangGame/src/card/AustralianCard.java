@@ -72,6 +72,7 @@ public class AustralianCard extends Card{
             printString += String.format("%-35s", acard.getAnimal());
             printString += "\n" + String.format("%27s", "Activities: ");
             printString += String.format("%-35s", acard.getActivity());
+            printString +="\n";
         }
     
         return printString;

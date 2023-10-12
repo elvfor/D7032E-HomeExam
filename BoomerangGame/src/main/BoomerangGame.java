@@ -12,7 +12,9 @@ import card.Card;
 import card.CardFactory;
 import game.gameContext.GameContext;
 import game.gameContext.GameContextFactory;
-import game.logic.IGameLogic;
+import game.logic.GameLogic;
+import game.logic.GameLogicFactory;
+import game.logic.IGameRules;
 import game.scoring.IScoring;
 import game.state.IGameState;
 import game.state.InitRoundState;
@@ -23,6 +25,7 @@ import player.BotPlayer;
 import player.HumanPlayer;
 import player.Player;
 import player.actions.IPlayerActions;
+import player.actions.BotPlayerActionsStandard;
 import player.actions.HumanPlayerActionsStandard;
 import player.communication.IPlayerCommunication;
 import player.communication.LocalPlayerCommunication;
@@ -52,11 +55,14 @@ public class BoomerangGame{
                     players.add(player);
                 }
                 for(int i = nrOfPlayers ; i<nrOfPlayers+nrOfBots ; i++){
-                    BotPlayer player = new BotPlayer(i, null);
+                    IPlayerActions botPlayerActions = new BotPlayerActionsStandard();
+
+                    BotPlayer player = new BotPlayer(i, botPlayerActions);
                     players.add(player);
                 }
-                GameContext context = initGameContext(players, "Australia", "Standard");
-                startGame(context);
+                GameLogic gameLogic = initGameLogic("Australia", "Standard");
+                GameContext gameContext = initGameContext(players, gameLogic);
+                //startGame(gameContext);
             } else {
                 System.err.println("Invalid number of command-line arguments.");
                 System.err.println("Usage: java BoomerangGame <ipAddress> OR java BoomerangGame <numPlayers> <numBots>");
@@ -90,19 +96,18 @@ public class BoomerangGame{
 		return connectedClients;
     }*/
 
-    private static GameContext initGameContext(ArrayList<Player> players, String version, String rules){
-        IGameLogic gameRules = GameContextFactory.createGameRules(rules);
-        IScoring scoring = GameContextFactory.createScoring(version);
-        GameContext context = new GameContext();
-        context.setCards(createCards(version));
-        context.setPlayers(players);
-        context.setCurrentState(new InitRoundState());
-        context.setRules(gameRules);
-        context.setScoring(scoring);
-        return context;
+    private static GameContext initGameContext(ArrayList<Player> players, GameLogic gameLogic){
+        return new GameContext(players, gameLogic);
     }
 
-    private static void startGame(GameContext context) throws IOException{
+    private static GameLogic initGameLogic( String version, String rules){
+        IGameRules gameRules = GameLogicFactory.createGameRules(rules);
+        IScoring scoring = GameLogicFactory.createScoring(version);
+        ArrayList<Card> cards = createCards(version);
+        return new GameLogic(gameRules, scoring, cards);
+    }
+
+    /*private static void startGame(GameContext context) throws IOException{
         System.out.println("test1");
 
         while (context.getCurrentState() != GameOverState) {
@@ -110,29 +115,24 @@ public class BoomerangGame{
             System.out.println("test3");
             context.getCurrentState().executeAction(context);
         }
-    }
+    }*/
     private static ArrayList<Card> createCards(String version){
         CardFactory cardFactory = new CardFactory();
         ArrayList<Card> cards;
-        System.out.println("test");
         try {
             cards = cardFactory.createCards(version);
-            for (Card card : cards) {
-            /*System.out.println("Card Name: " + card.getName());
-            System.out.println("Letter: " + card.getLetter());
-            System.out.println("Region: " + card.getRegion());
-            System.out.println("Number: " + card.getNumber());*/
-            // Check if the card is an instance of AustralianCard
-            if (card instanceof AustralianCard) {
-                AustralianCard australianCard = (AustralianCard) card;
-                /*System.out.println("Collections: " + australianCard.getCollection());
-                System.out.println("Animals: " + australianCard.getAnimal());
-                System.out.println("Activities: " + australianCard.getActivity());*/
-            }
-            // Print other card details as needed
-            //System.out.println("--------------------------");
-        }
             return cards;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static String[] createRegions(String version){
+        CardFactory cardFactory = new CardFactory();
+        String[] regions;
+        try {
+            regions = cardFactory.createRegionsFromConfig(version);
+            return regions;
         } catch (IOException e) {
             e.printStackTrace();
         }

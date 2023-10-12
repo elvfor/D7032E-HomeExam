@@ -1,5 +1,6 @@
 {
     "version": "Australia",
+    "regions": ["Western Australia", "Northern Territory", "Queensland", "South Australia", "New South Wales", "Victoria", "Tasmania"],
     "cards":
     [
     

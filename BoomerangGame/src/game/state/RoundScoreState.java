@@ -7,13 +7,12 @@ import game.gameContext.GameContext;
 import game.logic.GameLogic;
 import player.Player;
 
-public class StartGame implements IGameState{
+public class RoundScoreState implements IGameState{
 
     @Override
     public void executeAction(ArrayList<Player> players, GameLogic gameLogic, GameContext game) throws IOException {
-        System.out.println("the game has started");
+        System.out.println("Here we calculate the roundscore");
         IGameState GameOverState = new GameOverState();
-
         game.setCurrentState(GameOverState);
     }
     

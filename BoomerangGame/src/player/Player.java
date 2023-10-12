@@ -14,7 +14,7 @@ public class Player {
 	private IPlayerActions playerActions;
     private int playerID;
 	private ArrayList<String> region = new ArrayList<String>();
-	private ArrayList<Card> nextPLayersHand = new ArrayList<Card>();
+	private ArrayList<Card> nextPlayersHand = new ArrayList<Card>();
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	private ArrayList<Card> draft = new ArrayList<Card>();
 	HashMap<String, String> sites = new HashMap<String, String>(); //letter, region
@@ -39,7 +39,7 @@ public class Player {
     }
 
     public ArrayList<Card> getNextPlayersHand() {
-        return nextPLayersHand;
+        return nextPlayersHand;
     }
 
     public ArrayList<Card> getHand() {

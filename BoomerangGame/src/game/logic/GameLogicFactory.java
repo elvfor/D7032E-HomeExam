@@ -1,11 +1,11 @@
-package game.gameContext;
+package game.logic;
 
 import game.logic.IGameRules;
 import game.logic.standardGameRules;
 import game.scoring.IScoring;
 import game.scoring.australiaScoring;
 
-public class GameContextFactory {
+public class GameLogicFactory {
     public static IScoring createScoring(String version) {
         switch (version) {
             case "Australia":

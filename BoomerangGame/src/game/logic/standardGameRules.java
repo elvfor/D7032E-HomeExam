@@ -8,11 +8,20 @@ import java.util.List;
 import card.Card;
 import player.Player;
 
-public class standardGameLogic implements IGameLogic{
+public class standardGameRules implements IGameRules{
 
     @Override
-    public void passCards() {
-        System.out.println("passing cards");
+    public void passCards(ArrayList<Player> players) {
+
+        for(Player p : players) {
+            int pid = p.getPlayerID();
+            Player sendHandTo = (pid<(players.size()-1))?players.get(pid+1):players.get(0);
+
+            for(Card c : p.getNextPlayersHand()){
+                sendHandTo.getHand().add(c);
+            } // grab the cards passed on from the previous player
+            p.getNextPlayersHand().clear();
+        }
     }
 
     @Override
@@ -40,6 +49,19 @@ public class standardGameLogic implements IGameLogic{
 
                 }
             }
+        }
+    }
+
+    @Override
+    public void passLastCards(ArrayList<Player> players) {
+        for(Player p : players) {
+            int pid = p.getPlayerID();
+            Player sendHandTo = (pid>0)?players.get(pid-1):players.get(players.size()-1);
+
+            for(Card c : p.getNextPlayersHand()){
+                sendHandTo.getHand().add(c);
+            } // grab the cards passed on from the previous player
+            p.getNextPlayersHand().clear();
         }
     }
     
