@@ -103,8 +103,9 @@ public class BoomerangGame{
     private static GameLogic initGameLogic( String version, String rules){
         IGameRules gameRules = GameLogicFactory.createGameRules(rules);
         IScoring scoring = GameLogicFactory.createScoring(version);
-        ArrayList<Card> cards = createCards(version);
-        return new GameLogic(gameRules, scoring, cards);
+        Card[] cards = createCards(version);
+        String[] regions = createRegions(version);
+        return new GameLogic(gameRules, scoring, cards, regions);
     }
 
     /*private static void startGame(GameContext context) throws IOException{
@@ -116,9 +117,9 @@ public class BoomerangGame{
             context.getCurrentState().executeAction(context);
         }
     }*/
-    private static ArrayList<Card> createCards(String version){
+    private static Card[] createCards(String version){
         CardFactory cardFactory = new CardFactory();
-        ArrayList<Card> cards;
+        Card[] cards;
         try {
             cards = cardFactory.createCards(version);
             return cards;

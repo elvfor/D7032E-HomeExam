@@ -34,6 +34,14 @@ public class BotPlayerActionsStandard implements IPlayerActions{
                     break;
 				}
 			}
+        player.getNextPlayersHand().addAll(player.getHand());
+        player.getHand().clear();
+    }
+
+    @Override
+    public void pickScoringCard(Player player) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'pickScoringCard'");
     }
     
 }

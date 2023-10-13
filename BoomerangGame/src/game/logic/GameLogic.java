@@ -1,6 +1,7 @@
 package game.logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import card.Card;
 import game.scoring.IScoring;
@@ -10,14 +11,15 @@ import player.Player;
 public class GameLogic {
     private IGameRules gameRules;
     private IScoring scoring;
-    private ArrayList<Card> cards;
+    private Card[] cards;
     private String[] regions;
-    private ArrayList<String> finishedRegions;
+    private ArrayList<String> finishedRegions = new ArrayList<String>();
 
-    public GameLogic(IGameRules gameRules, IScoring scoring, ArrayList<Card> cards){
+    public GameLogic(IGameRules gameRules, IScoring scoring, Card[] cards, String[] regions){
         this.gameRules = gameRules;
         this.scoring = scoring;
         this.cards = cards;
+        this.regions = regions;
     }
 
     public IGameRules getGameRules() {
@@ -28,7 +30,7 @@ public class GameLogic {
         return scoring;
     }
 
-    public ArrayList<Card> getCards() {
+    public Card[] getCards() {
         return cards;
     }
 
@@ -40,7 +42,7 @@ public class GameLogic {
         return finishedRegions;
     }
 
-    public void setCards(ArrayList<Card> cards){
+    public void setCards(Card[] cards){
         this.cards = cards;
     }
         public void printCurrentDraft(Player player){
@@ -51,6 +53,18 @@ public class GameLogic {
             } else {
                 humanPlayer.getPlayerCommnication().sendMessage("\n*****************************\nYour current draft: \n" + printCards(player.getDraft()));
             }
+        }
+    }
+    public ArrayList<Card> resetRound(ArrayList<Player> players){
+        ArrayList<Card> deck = new ArrayList<>(Arrays.asList(cards)); 
+        clearBeforeRound(players);
+        return deck;
+    }
+    private void clearBeforeRound(ArrayList<Player> players){
+        for(Player p : players){
+            p.getDraft().clear();
+            p.getHand().clear();
+            p.getNextPlayersHand().clear();
         }
     }
 

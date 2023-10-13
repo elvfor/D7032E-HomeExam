@@ -15,13 +15,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 //import com.google.gson.Gson;
 public class CardFactory {
-    private ArrayList<Card> cards = new ArrayList<>();
+    private Card[] arrayDeck;
     private String[] regions;
-    public ArrayList<Card> createCards(String version) throws IOException {
+    public Card[] createCards(String version) throws IOException {
             // Create a card based on the version
             if ("Australia".equals(version)) {
-
+                
                 JsonArray cardsData = createJSONCardsFromConfig("../config/australianCards.JSON");
+                this.arrayDeck = new Card [cardsData.size()];
                 for (int i = 0; i < cardsData.size(); i++) {
                     JsonObject cardData = cardsData.get(i).getAsJsonObject();
                     // Extract card properties from the JSON object
@@ -32,7 +33,8 @@ public class CardFactory {
                     String collection = cardData.get("collection").getAsString();
                     String animal = cardData.get("animal").getAsString();
                     String activity = cardData.get("activity").getAsString();
-                    cards.add(new AustralianCard(name, letter, region, number, collection, animal, activity));
+                    //cards.add(new AustralianCard(name, letter, region, number, collection, animal, activity));
+                    arrayDeck[i] = new AustralianCard(name, letter, region, number, collection, animal, activity);
                 }
             } else if ("European".equals(version)) {
                 // Create a European card (if applicable) and add it to the list
@@ -40,7 +42,7 @@ public class CardFactory {
                 // Handle other versions or throw an exception for unsupported versions
                 throw new IllegalArgumentException("Unsupported card version: " + version);
             }
-        return cards;
+        return arrayDeck;
     }
     public String[] createRegionsFromConfig(String version) throws IOException{
         // Create a card based on the version

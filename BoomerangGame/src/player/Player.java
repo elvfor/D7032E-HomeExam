@@ -33,6 +33,15 @@ public class Player {
     public IPlayerActions getPlayerActions() {
         return playerActions;
     }
+    public void setRegionRoundScore(int score) {
+        regionRoundScore = score;
+    }
+    public void setRScore(ArrayList<HashMap<String, Integer>> rScore) {
+        this.rScore = rScore;
+    }
+    public void setRoundScore(int score) {
+        finalScore = score;
+    }
 
     public ArrayList<String> getRegion() {
         return region;

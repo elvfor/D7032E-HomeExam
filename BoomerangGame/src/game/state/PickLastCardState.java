@@ -24,7 +24,7 @@ public class PickLastCardState implements IGameState{
                         try {
                             gameLogic.printCurrentDraft(player);
                             gameLogic.printCurrentHand(player);
-                            player.getPlayerActions().pickThrowCard(player);
+                            player.getPlayerActions().pickCardFromDraft(player);
                         } finally {
                             latch.countDown(); // Signal that this task is complete
                         }
@@ -40,6 +40,9 @@ public class PickLastCardState implements IGameState{
                 // Handle InterruptedException, if necessary
             }
             gameLogic.getGameRules().passLastCards(game.getPlayers());
+            //gameLogic.getGameRules().passCards(game.getPlayers());
+            System.out.println("this is the last card");
+            //gameLogic.printAllPlayersDraft(game.getPlayers());
             IGameState roundScoreState = new RoundScoreState();
             game.setCurrentState(roundScoreState);
             

@@ -20,10 +20,12 @@ public class GameContext {
     private GameLogic gameLogic;
     private IGameState currentState;
     private Player activePlayer;
+    private int currentGameRound;
 
     public GameContext(ArrayList<Player> players, GameLogic gameLogic){
         this.players = players;
         this.gameLogic = gameLogic;
+        currentGameRound = 0;
         setCurrentState(new InitRoundState());
 
         startGame();
@@ -56,5 +58,13 @@ public class GameContext {
     public ArrayList<Player> getPlayers(){
         return players;
     }
+
+    public int getCurrentGameRound(){
+        return currentGameRound;
+    }
+
+    public void setCurrentGameRound(int gameRound){
+        this.currentGameRound = gameRound;
+        }
 
 }

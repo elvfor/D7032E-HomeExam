@@ -25,24 +25,18 @@ public class standardGameRules implements IGameRules{
     }
 
     @Override
-    public void cardDraft() {
-        System.out.println("Drafting cards");
-
-    }
-
-    @Override
     public ArrayList<Card> shuffleCards(ArrayList<Card> cards) {
         Collections.shuffle(cards);
         return cards;
     }
 
     @Override
-    public void dealCards(ArrayList<Card> cards, ArrayList<Player> players) {
+    public void dealCards(ArrayList<Card> deck, ArrayList<Player> players) {
         //Requirement 4
 		for(Player player : players) {
 			for (int i = 0; i < 7; i++) {
-                if (!cards.isEmpty()) {
-                    Card card = cards.remove(0); // Remove the top card from the deck
+                if (!deck.isEmpty()) {
+                    Card card = deck.remove(0); // Remove the top card from the deck
                     player.getHand().add(card);  // Add the card to the player's hand
                 } else {
                     System.out.println("Card is empty");
@@ -59,10 +53,9 @@ public class standardGameRules implements IGameRules{
             Player sendHandTo = (pid>0)?players.get(pid-1):players.get(players.size()-1);
 
             for(Card c : p.getNextPlayersHand()){
-                sendHandTo.getHand().add(c);
+                sendHandTo.getDraft().add(c);
             } // grab the cards passed on from the previous player
             p.getNextPlayersHand().clear();
         }
     }
-    
 }

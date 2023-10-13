@@ -15,7 +15,7 @@ public class PickCardAndPassState implements IGameState{
     private int currentRound = 0;
     @Override
     public void executeAction(ArrayList<Player> players, GameLogic gameLogic, GameContext game) throws IOException {
-        if (currentRound <= roundsToRun) {
+        if (currentRound < roundsToRun) {
             ExecutorService threadpool = Executors.newFixedThreadPool(game.getPlayers().size()); 
             CountDownLatch latch = new CountDownLatch(game.getPlayers().size()); 
     
@@ -26,7 +26,7 @@ public class PickCardAndPassState implements IGameState{
                         try {
                             gameLogic.printCurrentDraft(player);
                             gameLogic.printCurrentHand(player);
-                            player.getPlayerActions().pickThrowCard(player);
+                            player.getPlayerActions().pickCardFromDraft(player);
                         } finally {
                             latch.countDown(); // Signal that this task is complete
                         }

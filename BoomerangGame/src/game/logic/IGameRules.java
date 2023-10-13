@@ -9,7 +9,6 @@ import player.Player;
 public interface IGameRules {
     void passCards(ArrayList<Player> players);
     void passLastCards(ArrayList<Player> players);
-    void cardDraft();
     ArrayList<Card> shuffleCards(ArrayList<Card> cards);
     void dealCards(ArrayList<Card> cards, ArrayList<Player> players);
 }
