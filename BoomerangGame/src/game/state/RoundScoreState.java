@@ -23,6 +23,7 @@ public class RoundScoreState implements IGameState{
                     public void run() {
                         try {
                             gameLogic.getScoring().roundScore(player, gameLogic);
+                            gameLogic.printAfterRound(player);
                         } finally {
                             latch.countDown(); // Signal that this task is complete
                         }
@@ -38,8 +39,8 @@ public class RoundScoreState implements IGameState{
                 // Handle InterruptedException, if necessary
             }
         if(game.getCurrentGameRound() == 4){
-            IGameState GameOverState = new GameOverState();
-            game.setCurrentState(GameOverState);
+            IGameState lastRoundScoringState = new LastRoundScoringState();
+            game.setCurrentState(lastRoundScoringState);
         }
         else{
             IGameState initRoundState = new InitRoundState();

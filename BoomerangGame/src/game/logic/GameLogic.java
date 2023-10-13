@@ -85,6 +85,48 @@ public class GameLogic {
     
         return printString.toString();
     }
+    public void printAfterRound(Player player){
+        if(player instanceof HumanPlayer){
+            HumanPlayer humanPlayer = (HumanPlayer) player; // Cast to HumanPlayer
+            humanPlayer.getPlayerCommnication().sendMessage("********************************\nYour draft this round: \n"+ printCards(player.getDraft())+"\n");
+            humanPlayer.getPlayerCommnication().sendMessage("The following regions have now been completed: "+ finishedRegions);
+
+        }
+    }
+    public void checkWinner(ArrayList<Player> players){
+        Player highScore = players.get(0);
+        int highScoreThrowCatch = calculateThrowCatchScore(players.get(0));
+
+        for (Player player : players) {
+            int currentPlayerThrowCatch = calculateThrowCatchScore(player);
+            
+            if (player.getFinalScore() > highScore.getFinalScore() || (player.getFinalScore() == highScore.getFinalScore() && currentPlayerThrowCatch > highScoreThrowCatch)) {
+                highScore = player;
+                highScoreThrowCatch = currentPlayerThrowCatch;
+            }
+        }
+
+        for (Player player : players) {
+            if(player instanceof HumanPlayer){
+            HumanPlayer humanPlayer = (HumanPlayer) player; // Cast to HumanPlayer
+            humanPlayer.getPlayerCommnication().sendMessage("The winner is player: " + players.indexOf(highScore) + " with " + highScore.getFinalScore() + " points");
+            }
+        }
+    }
+
+
+// Add a method to calculate the Throw & Catch score for a player
+    private int calculateThrowCatchScore(Player player) {
+        int totalT = 0;
+        String t="Throw and Catch score";
+        totalT += player.getRScore().get(0).get(t) +
+            player.getRScore().get(1).get(t) +
+            player.getRScore().get(2).get(t) +
+            player.getRScore().get(3).get(t);
+
+        return totalT;
+    }
+
 
     public void printAllPlayersDraft(ArrayList<Player> players){
         for(int pID=0; pID<players.size(); pID++) {

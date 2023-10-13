@@ -70,6 +70,9 @@ public class Player {
     public HashMap<String, Integer> getActivitiesScore() {
         return activitiesScore;
     }
+    public void addToActivitiesScore(String activity, int score) {
+        this.activitiesScore.put(activity, score);
+    }
 
     public int getRegionRoundScore() {
         return regionRoundScore;
@@ -77,5 +80,8 @@ public class Player {
 
     public int getFinalScore() {
         return finalScore;
+    }
+    public void setFinalScore(int score) {
+        this.finalScore = score;
     }
 }

@@ -29,7 +29,34 @@ public class australiaScoring implements IScoring{
 
     @Override
     public void totalScore(Player player, GameLogic gameLogic) {
-        System.out.println("Calculate total score");
+        String t="Throw and Catch score", to="Tourist sites score", c="Collections score", a="Animals score";
+        String[] act={"Indigenous Culture","Bushwalking","Swimming","Sightseeing"};
+
+				int totalAct = 0;
+				for(String anAct : act) {
+					if(player.getActivitiesScore().get(anAct)==null)
+						player.addToActivitiesScore(anAct, 0);
+					totalAct+=player.getActivitiesScore().get(anAct).intValue();
+				}
+				int totalT=player.getRScore().get(0).get(t).intValue()+player.getRScore().get(1).get(t).intValue()+player.getRScore().get(2).get(t).intValue()+player.getRScore().get(3).get(t).intValue();
+				int totalTo=player.getRScore().get(0).get(to).intValue()+player.getRScore().get(1).get(to).intValue()+player.getRScore().get(2).get(to).intValue()+player.getRScore().get(3).get(to).intValue();
+				int totalC=player.getRScore().get(0).get(c).intValue()+player.getRScore().get(1).get(c).intValue()+player.getRScore().get(2).get(c).intValue()+player.getRScore().get(3).get(c).intValue();
+				int totalA=player.getRScore().get(0).get(a).intValue()+player.getRScore().get(1).get(a).intValue()+player.getRScore().get(2).get(a).intValue()+player.getRScore().get(3).get(a).intValue();
+				//Requirement 12
+					String finalScore =  "                       Round 1\tRound 2\tRound 3\tRound 4\tTotal\n";
+					       finalScore += "Throw and Catch score:   " + player.getRScore().get(0).get(t)+"\t  "+player.getRScore().get(1).get(t)+"\t  "+player.getRScore().get(2).get(t)+"\t  "+player.getRScore().get(3).get(t)+"\t  "+totalT+"\n";
+					       finalScore += "  Tourist sites score:   " + player.getRScore().get(0).get(to)+"\t  "+player.getRScore().get(1).get(to)+"\t  "+player.getRScore().get(2).get(to)+"\t  "+player.getRScore().get(3).get(to)+"\t  "+totalTo+"\n";;
+					       finalScore += "    Collections score:   " + player.getRScore().get(0).get(c)+"\t  "+player.getRScore().get(1).get(c)+"\t  "+player.getRScore().get(2).get(c)+"\t  "+player.getRScore().get(3).get(c)+"\t  "+totalC+"\n";
+						   finalScore += "        Animals score:   " + player.getRScore().get(0).get(a)+"\t  "+player.getRScore().get(1).get(a)+"\t  "+player.getRScore().get(2).get(a)+"\t  "+player.getRScore().get(3).get(a)+"\t  "+totalA+"\n";	
+	  				       finalScore += "                        IndC\tBushw\tSwim\tSights\n";
+	  				       finalScore += "     Activities score:   " + player.getActivitiesScore().get(act[0])+"\t  "+ player.getActivitiesScore().get(act[1])+"\t  "+player.getActivitiesScore().get(act[2])+"\t  "+player.getActivitiesScore().get(act[3])+"\t  "+totalAct+"\n";
+	  				       finalScore += "       Region bonuses:   " + (player.getRegion().size()*3)+"\n";
+	  				       finalScore += "          Total score:   " + (totalT+totalTo+totalC+totalA+totalAct+(player.getRegion().size()*3)) + " points\n";
+	  				if(player instanceof HumanPlayer){
+                HumanPlayer humanPlayer = (HumanPlayer) player; // Cast to HumanPlayer
+                humanPlayer.getPlayerCommnication().sendMessage("\n*********************************************\n"+finalScore);
+                    }
+                     //(totalT+totalC+totalA+totalAct+(region.size()*3));
     }
 
     @Override
@@ -69,7 +96,9 @@ public class australiaScoring implements IScoring{
 					countRoundActivities = scoret;
 					break; //Requirement 10e(i) exit the loop since you are only allowed to score one activity per round
 				}
-			}return countRoundActivities;
+			}
+            player.setFinalScore(player.getFinalScore()+countRoundActivities);
+            return countRoundActivities;
         }else{
             int countRoundActivities = 0;
 			int[] scoreTable = {0,2,4,7,10,15};
@@ -84,6 +113,7 @@ public class australiaScoring implements IScoring{
 					break; //Requirement 10e(i) exit the loop since you are only allowed to score one activity per round
 				}
 			}
+            player.setFinalScore(player.getFinalScore()+countRoundActivities);
             return countRoundActivities;
         }
     }
@@ -94,6 +124,7 @@ public class australiaScoring implements IScoring{
             HumanPlayer humanPlayer = (HumanPlayer) player; // Cast to HumanPlayer
             humanPlayer.getPlayerCommnication().sendMessage("This round you scored " + throwCatchScore + " as your Throw and catch score");
         }
+        player.setFinalScore(player.getFinalScore()+throwCatchScore);
         return throwCatchScore;
     }
 
@@ -111,6 +142,7 @@ public class australiaScoring implements IScoring{
                 HumanPlayer humanPlayer = (HumanPlayer) player; // Cast to HumanPlayer
                 humanPlayer.getPlayerCommnication().sendMessage("This round you scored " + thisRoundSites + " new sites points and " + regionRoundScore + " points for completing regions");
             }
+        player.setFinalScore(player.getFinalScore()+thisRoundSites);
         return thisRoundSites;
     }
     private int regionCompleteScore(Player player, GameLogic gameLogic){
@@ -129,6 +161,7 @@ public class australiaScoring implements IScoring{
                     gameLogic.getFinishedRegions().add(gameLogic.getRegions()[r]); //Requirement 10b(ii)
                 }
             }
+            player.setFinalScore(player.getFinalScore()+tempScore);
             return tempScore;
 		}
     private boolean checkRegionComplete(String theRegion, Player player) {
@@ -171,6 +204,7 @@ public class australiaScoring implements IScoring{
             HumanPlayer humanPlayer = (HumanPlayer) player; // Cast to HumanPlayer
             humanPlayer.getPlayerCommnication().sendMessage("This round you scored these collections: " + thisRoundCollections);
         }
+        player.setFinalScore(player.getFinalScore()+totalCollectionScore);
         return totalCollectionScore;
     }
     private int animalScore(Player player, GameLogic gameLogic) {
@@ -200,7 +234,7 @@ public class australiaScoring implements IScoring{
             HumanPlayer humanPlayer = (HumanPlayer) player;
             humanPlayer.getPlayerCommnication().sendMessage("This round you scored these Animals: " + thisRoundAnimals);
         }
-    
+        player.setFinalScore(player.getFinalScore()+countRoundAnimals);
         return countRoundAnimals;
     }
     private int numberThings(String aThing, String category, Player player) {
