@@ -2,14 +2,8 @@ package game.state;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import card.AustralianCard;
-import card.Card;
 import game.logic.GameLogic;
-import game.logic.IGameRules;
-import game.scoring.IScoring;
-import player.HumanPlayer;
 import player.Player;
 
 public class GameContext {

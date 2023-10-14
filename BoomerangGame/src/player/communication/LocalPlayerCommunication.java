@@ -2,8 +2,8 @@ package player.communication;
 
 import java.util.Scanner;
 
-public class LocalPlayerCommunication implements IPlayerCommunication{
-        private Scanner scanner;
+public class LocalPlayerCommunication implements IPlayerCommunication {
+    private Scanner scanner;
 
     public LocalPlayerCommunication() {
         this.scanner = new Scanner(System.in);
@@ -18,5 +18,5 @@ public class LocalPlayerCommunication implements IPlayerCommunication{
     public String receiveInput() {
         return scanner.nextLine();
     }
-    
+
 }

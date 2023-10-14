@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import card.Card;
 import game.scoring.IScoring;
-import player.HumanPlayer;
 import player.Player;
 
 public class GameLogic {
@@ -77,17 +76,6 @@ public class GameLogic {
         }
     }
 
-    /*
-     * public void printCurrentHand(Player player){
-     * if (player instanceof HumanPlayer) {
-     * HumanPlayer humanPlayer = (HumanPlayer) player;
-     * humanPlayer.getPlayerCommnication().
-     * sendMessage("\n*****************************\nYour current hand: \n" +
-     * printCards(player.getHand()));
-     * 
-     * }
-     * }
-     */
     public void printCurrentHand() {
         if (currentPlayer.getPlayerCommunication() != null) {
             currentPlayer.getPlayerCommunication().sendMessage(

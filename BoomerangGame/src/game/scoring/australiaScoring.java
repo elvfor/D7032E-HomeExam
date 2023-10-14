@@ -3,14 +3,12 @@ package game.scoring;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import card.AustralianCard;
 import card.Card;
 import game.logic.GameLogic;
 import player.HumanPlayer;
 import player.Player;
-import player.communication.IPlayerCommunication;
 
 public class australiaScoring implements IScoring {
 

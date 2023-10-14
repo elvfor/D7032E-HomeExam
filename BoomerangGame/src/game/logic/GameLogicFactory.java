@@ -1,7 +1,5 @@
 package game.logic;
 
-import game.logic.IGameRules;
-import game.logic.standardGameRules;
 import game.scoring.IScoring;
 import game.scoring.australiaScoring;
 
@@ -10,8 +8,8 @@ public class GameLogicFactory {
         switch (version) {
             case "Australia":
                 return new australiaScoring();
-            //case "European":
-            //    return new EuropeanGameRules();
+            // case "European":
+            // return new EuropeanGameRules();
             // Add more cases for other game versions
             default:
                 throw new IllegalArgumentException("Unsupported game version: " + version);
@@ -19,11 +17,11 @@ public class GameLogicFactory {
     }
 
     public static IGameRules createGameRules(String type) {
-        switch(type){
+        switch (type) {
             case "Standard":
                 return new standardGameRules();
             default:
-             throw new IllegalArgumentException("Unsupported rule type: " + type);
+                throw new IllegalArgumentException("Unsupported rule type: " + type);
         }
     }
 

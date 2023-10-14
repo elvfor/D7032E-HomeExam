@@ -1,11 +1,5 @@
 package player;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.Scanner;
-
-import player.Player;
 import player.actions.IPlayerActions;
 import player.communication.IPlayerCommunication;
 

@@ -1,10 +1,6 @@
 package player.actions;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import card.Card;
-import player.HumanPlayer;
 import player.Player;
 
 public class HumanPlayerActionsStandard implements IPlayerActions {

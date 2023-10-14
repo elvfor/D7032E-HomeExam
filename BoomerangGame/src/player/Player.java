@@ -1,11 +1,7 @@
 package player;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 import player.communication.IPlayerCommunication;
 import card.Card;
 import player.actions.IPlayerActions;

@@ -1,14 +1,9 @@
 package main;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
-import card.AustralianCard;
 import card.Card;
 import card.CardFactory;
 import game.logic.GameLogic;
@@ -16,7 +11,6 @@ import game.logic.GameLogicFactory;
 import game.logic.IGameRules;
 import game.scoring.IScoring;
 import game.state.GameContext;
-import game.state.IGameState;
 import network.Client;
 import network.Server;
 import player.BotPlayer;
@@ -145,8 +139,6 @@ public class BoomerangGame {
     }
 
     private static void startGame(ArrayList<Player> players, GameLogic gameLogic) throws IOException {
-        // System.out.println("test");
-        // GameContext handles GameState
         GameContext gameContext = new GameContext(players, gameLogic);
         endGame(players);
     }

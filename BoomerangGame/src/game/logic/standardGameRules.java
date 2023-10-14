@@ -1,23 +1,21 @@
 package game.logic;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import card.Card;
 import player.Player;
 
-public class standardGameRules implements IGameRules{
+public class standardGameRules implements IGameRules {
 
     @Override
     public void passCards(ArrayList<Player> players) {
 
-        for(Player p : players) {
+        for (Player p : players) {
             int pid = p.getPlayerID();
-            Player sendHandTo = (pid<(players.size()-1))?players.get(pid+1):players.get(0);
+            Player sendHandTo = (pid < (players.size() - 1)) ? players.get(pid + 1) : players.get(0);
 
-            for(Card c : p.getNextPlayersHand()){
+            for (Card c : p.getNextPlayersHand()) {
                 sendHandTo.getHand().add(c);
             } // grab the cards passed on from the previous player
             p.getNextPlayersHand().clear();
@@ -32,12 +30,12 @@ public class standardGameRules implements IGameRules{
 
     @Override
     public void dealCards(ArrayList<Card> deck, ArrayList<Player> players) {
-        //Requirement 4
-		for(Player player : players) {
-			for (int i = 0; i < 7; i++) {
+        // Requirement 4
+        for (Player player : players) {
+            for (int i = 0; i < 7; i++) {
                 if (!deck.isEmpty()) {
                     Card card = deck.remove(0); // Remove the top card from the deck
-                    player.getHand().add(card);  // Add the card to the player's hand
+                    player.getHand().add(card); // Add the card to the player's hand
                 } else {
                     System.out.println("Card is empty");
 
@@ -48,11 +46,11 @@ public class standardGameRules implements IGameRules{
 
     @Override
     public void passLastCards(ArrayList<Player> players) {
-        for(Player p : players) {
+        for (Player p : players) {
             int pid = p.getPlayerID();
-            Player sendHandTo = (pid>0)?players.get(pid-1):players.get(players.size()-1);
+            Player sendHandTo = (pid > 0) ? players.get(pid - 1) : players.get(players.size() - 1);
 
-            for(Card c : p.getNextPlayersHand()){
+            for (Card c : p.getNextPlayersHand()) {
                 sendHandTo.getDraft().add(c);
             } // grab the cards passed on from the previous player
             p.getNextPlayersHand().clear();
