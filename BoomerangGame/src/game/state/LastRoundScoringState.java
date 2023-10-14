@@ -9,13 +9,19 @@ import java.util.concurrent.Executors;
 import game.logic.GameLogic;
 import player.Player;
 
-public class LastRoundScoringState implements IGameState{
+public class LastRoundScoringState implements IGameState {
 
     @Override
     public void executeAction(ArrayList<Player> players, GameLogic gameLogic, GameContext game) throws IOException {
-        ExecutorService threadpool = Executors.newFixedThreadPool(game.getPlayers().size()); 
-        CountDownLatch latch = new CountDownLatch(game.getPlayers().size()); 
-    
+        calculateFinalScores(players, gameLogic, game);
+        gameLogic.checkWinner(players);
+        game.setCurrentState(null);
+    }
+
+    private void calculateFinalScores(ArrayList<Player> players, GameLogic gameLogic, GameContext game) {
+        ExecutorService threadpool = Executors.newFixedThreadPool(game.getPlayers().size());
+        CountDownLatch latch = new CountDownLatch(game.getPlayers().size());
+
         for (Player player : game.getPlayers()) {
             Runnable task = new Runnable() {
                 @Override
@@ -29,15 +35,12 @@ public class LastRoundScoringState implements IGameState{
             };
             threadpool.execute(task);
         }
-    
+
         try {
             // Wait until all tasks are complete
             latch.await();
         } catch (InterruptedException e) {
             // Handle InterruptedException, if necessary
         }
-        gameLogic.checkWinner(players);
-            game.setCurrentState(null);
     }
-
 }

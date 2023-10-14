@@ -13,7 +13,6 @@ public class GameLogic {
     private Card[] cards;
     private String[] regions;
     private ArrayList<String> finishedRegions = new ArrayList<String>();
-    private Player currentPlayer;
 
     public GameLogic(IGameRules gameRules, IScoring scoring, Card[] cards, String[] regions) {
         this.gameRules = gameRules;
@@ -42,10 +41,6 @@ public class GameLogic {
         return finishedRegions;
     }
 
-    public void setCurrentPlayer(Player player) {
-        this.currentPlayer = player;
-    }
-
     public void setCards(Card[] cards) {
         this.cards = cards;
     }
@@ -58,7 +53,8 @@ public class GameLogic {
         } else {
             if (player.getPlayerCommunication() != null) {
                 player.getPlayerCommunication().sendMessage(
-                        "\n*****************************\nYour current draft: \n" + printCards(player.getDraft()));
+                        "\n*****************************\nYour current draft: \n"
+                                + printCards(player.getDraft()));
             }
         }
     }
@@ -76,10 +72,10 @@ public class GameLogic {
         }
     }
 
-    public void printCurrentHand() {
-        if (currentPlayer.getPlayerCommunication() != null) {
-            currentPlayer.getPlayerCommunication().sendMessage(
-                    "\n*****************************\nYour current hand: \n" + printCards(currentPlayer.getHand()));
+    public void printCurrentHand(Player player) {
+        if (player.getPlayerCommunication() != null) {
+            player.getPlayerCommunication().sendMessage(
+                    "\n*****************************\nYour current hand: \n" + printCards(player.getHand()));
         }
 
     }
@@ -94,13 +90,15 @@ public class GameLogic {
         return printString.toString();
     }
 
-    public void printAfterRound(Player player) {
-        if (player.getPlayerCommunication() != null) {
-            player.getPlayerCommunication()
-                    .sendMessage("********************************\nYour draft this round: \n"
-                            + printCards(player.getDraft()) + "\n");
-            player.getPlayerCommunication()
-                    .sendMessage("The following regions have now been completed: " + finishedRegions);
+    public void printAfterRound(ArrayList<Player> players) {
+        for (Player player : players) {
+            if (player.getPlayerCommunication() != null) {
+                player.getPlayerCommunication()
+                        .sendMessage("********************************\nYour draft this round: \n"
+                                + printCards(player.getDraft()) + "\n");
+                player.getPlayerCommunication()
+                        .sendMessage("The following regions have now been completed: " + finishedRegions);
+            }
         }
 
     }

@@ -11,7 +11,6 @@ public class GameContext {
     private ArrayList<Player> players;
     private GameLogic gameLogic;
     private IGameState currentState;
-    private Player activePlayer;
     private int currentGameRound;
 
     public GameContext(ArrayList<Player> players, GameLogic gameLogic) {

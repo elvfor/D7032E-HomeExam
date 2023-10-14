@@ -32,6 +32,7 @@ public class BoomerangGame {
                 int nrOfPlayers = Integer.parseInt(args[0]);
                 int nrOfBots = Integer.parseInt(args[1]);
                 if (checkNrOfPlayerReq(nrOfPlayers, nrOfBots)) {
+                    System.out.print("Initializing game with " + (nrOfPlayers) + " players and " + (nrOfBots) + "\n");
                     playAsLocalPlayer(nrOfPlayers, nrOfBots);
                 }
             } else {
@@ -89,6 +90,24 @@ public class BoomerangGame {
         }
     }
 
+    private static int chooseServerPort(Player player) {
+        String response = "";
+        player.getPlayerCommunication().sendMessage("Use standard port (2048) for remote player connection? Y/N");
+        response = player.getPlayerCommunication().receiveInput();
+        if ("Y".equalsIgnoreCase(response)) {
+            return 2048;
+        } else {
+            player.getPlayerCommunication().sendMessage("Enter port number for remote player connection:");
+            response = player.getPlayerCommunication().receiveInput();
+            try {
+                return Integer.parseInt(response);
+            } catch (NumberFormatException e) {
+                player.getPlayerCommunication().sendMessage("Invalid port number. Using standard port (2048).");
+                return 2048;
+            }
+        }
+    }
+
     private static String chooseGameRules(Player player) {
         String response = "";
         player.getPlayerCommunication().sendMessage("Standard Game Rules Y/N");
@@ -110,14 +129,19 @@ public class BoomerangGame {
     }
 
     private static void addRemotePlayers(ArrayList<Player> players, int nrOfPlayers) {
-        Server server = new Server(2048, nrOfPlayers - 1);
-        List<Socket> acceptedSockets = server.getAcceptedSockets();
-        for (int i = 1; i < nrOfPlayers; i++) {
-            for (Socket acceptedSocket : acceptedSockets) {
-                IPlayerActions playerActions = new HumanPlayerActionsStandard();
-                IPlayerCommunication playerCommunication = new RemotePlayerCommunication(acceptedSocket);
-                HumanPlayer player = new HumanPlayer(i, playerActions, playerCommunication);
-                players.add(player);
+        if (nrOfPlayers > 1) {
+            int port = chooseServerPort(players.get(0));
+            players.get(0).getPlayerCommunication()
+                    .sendMessage("Waiting for " + (nrOfPlayers - 1) + " players to join.");
+            Server server = new Server(port, nrOfPlayers - 1);
+            List<Socket> acceptedSockets = server.getAcceptedSockets();
+            for (int i = 1; i < nrOfPlayers; i++) {
+                for (Socket acceptedSocket : acceptedSockets) {
+                    IPlayerActions playerActions = new HumanPlayerActionsStandard();
+                    IPlayerCommunication playerCommunication = new RemotePlayerCommunication(acceptedSocket);
+                    HumanPlayer player = new HumanPlayer(i, playerActions, playerCommunication);
+                    players.add(player);
+                }
             }
         }
     }

@@ -19,7 +19,7 @@ if "%errorlevel%"=="0" (
   echo To run a client, use: java -cp .;%GSON_JAR% BoomerangGame serverIPAddress
   rem Run the BoomerangGame with arguments (e.g., 2 and 0)
 
-  java -cp .;%GSON_JAR%; main.BoomerangGame 2 1
+  java -cp .;%GSON_JAR%; main.BoomerangGame 1 1
 ) else (
   echo Compilation failed.
 )
