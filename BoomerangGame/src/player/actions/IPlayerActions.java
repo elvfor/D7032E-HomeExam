@@ -2,8 +2,8 @@ package player.actions;
 
 import player.Player;
 
-public interface IPlayerActions{
+public interface IPlayerActions {
     void pickThrowCard(Player player);
-    void pickCardFromDraft(Player player);
-    void pickScoringCard(Player player);
+
+    void pickCardFromHand(Player player);
 }

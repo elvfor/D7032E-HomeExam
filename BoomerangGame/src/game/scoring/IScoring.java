@@ -1,7 +1,7 @@
 package game.scoring;
 
-import game.gameContext.GameContext;
 import game.logic.GameLogic;
+import game.state.GameContext;
 import player.Player;
 
 public interface IScoring {

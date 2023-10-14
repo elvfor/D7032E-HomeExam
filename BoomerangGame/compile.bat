@@ -7,7 +7,7 @@ rem Compile all Java source files
 set GSON_JAR=..\lib\gson-2.8.6.jar
 @mkdir ..\bin
 set OUTPUT_DIR=..\bin
-javac -d %OUTPUT_DIR% -cp .;%GSON_JAR%  card\*.java game\gameContext\*.java game\logic\*.java game\scoring\*.java game\state\*.java main\*.java network\*.java  player\*.java player\actions\*.java player\communication\*.java
+javac -d %OUTPUT_DIR% -cp .;%GSON_JAR%  card\*.java game\logic\*.java game\scoring\*.java game\state\*.java main\*.java network\*.java  player\*.java player\actions\*.java player\communication\*.java
 rem Check if compilation was successful
 if "%errorlevel%"=="0" (
   echo Compilation successful.
@@ -19,7 +19,7 @@ if "%errorlevel%"=="0" (
   echo To run a client, use: java -cp .;%GSON_JAR% BoomerangGame serverIPAddress
   rem Run the BoomerangGame with arguments (e.g., 2 and 0)
 
-  java -cp .;%GSON_JAR%; main.BoomerangGame 1 1
+  java -cp .;%GSON_JAR%; main.BoomerangGame 2 1
 ) else (
   echo Compilation failed.
 )

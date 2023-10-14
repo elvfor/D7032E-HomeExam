@@ -6,39 +6,45 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-
+import player.communication.IPlayerCommunication;
 import card.Card;
 import player.actions.IPlayerActions;
 
 public class Player {
-	private IPlayerActions playerActions;
+    private IPlayerActions playerActions;
     private int playerID;
-	private ArrayList<String> region = new ArrayList<String>();
-	private ArrayList<Card> nextPlayersHand = new ArrayList<Card>();
-	private ArrayList<Card> hand = new ArrayList<Card>();
-	private ArrayList<Card> draft = new ArrayList<Card>();
-	HashMap<String, String> sites = new HashMap<String, String>(); //letter, region
-	ArrayList<HashMap<String, Integer>> rScore = new ArrayList<HashMap<String, Integer>>();
-	HashMap<String, Integer> activitiesScore = new HashMap<>();
-	private int regionRoundScore = 0;
-	private int finalScore = 0;
+    private ArrayList<String> region = new ArrayList<String>();
+    private ArrayList<Card> nextPlayersHand = new ArrayList<Card>();
+    private ArrayList<Card> hand = new ArrayList<Card>();
+    private ArrayList<Card> draft = new ArrayList<Card>();
+    HashMap<String, String> sites = new HashMap<String, String>(); // letter, region
+    ArrayList<HashMap<String, Integer>> rScore = new ArrayList<HashMap<String, Integer>>();
+    HashMap<String, Integer> activitiesScore = new HashMap<>();
+    private int regionRoundScore = 0;
+    private int finalScore = 0;
+    private IPlayerCommunication playerCommunication;
 
     public Player(int playerID, IPlayerActions playerActions) {
-	    this.playerID = playerID;
-		this.playerActions = playerActions;
-	}
-	public int getPlayerID() {
+        this.playerID = playerID;
+        this.playerActions = playerActions;
+    }
+
+    public int getPlayerID() {
         return playerID;
     }
+
     public IPlayerActions getPlayerActions() {
         return playerActions;
     }
+
     public void setRegionRoundScore(int score) {
         regionRoundScore = score;
     }
+
     public void setRScore(ArrayList<HashMap<String, Integer>> rScore) {
         this.rScore = rScore;
     }
+
     public void setRoundScore(int score) {
         finalScore = score;
     }
@@ -70,6 +76,7 @@ public class Player {
     public HashMap<String, Integer> getActivitiesScore() {
         return activitiesScore;
     }
+
     public void addToActivitiesScore(String activity, int score) {
         this.activitiesScore.put(activity, score);
     }
@@ -81,7 +88,20 @@ public class Player {
     public int getFinalScore() {
         return finalScore;
     }
+
     public void setFinalScore(int score) {
         this.finalScore = score;
+    }
+
+    public void setSites(String letter, String region) {
+        this.sites.put(letter, region);
+    }
+
+    public void setPlayerCommunication(IPlayerCommunication playerCommunication) {
+        this.playerCommunication = playerCommunication;
+    }
+
+    public IPlayerCommunication getPlayerCommunication() {
+        return playerCommunication;
     }
 }

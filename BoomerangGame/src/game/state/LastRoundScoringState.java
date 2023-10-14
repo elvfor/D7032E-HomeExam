@@ -6,7 +6,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import game.gameContext.GameContext;
 import game.logic.GameLogic;
 import player.Player;
 
@@ -38,8 +37,7 @@ public class LastRoundScoringState implements IGameState{
             // Handle InterruptedException, if necessary
         }
         gameLogic.checkWinner(players);
-            IGameState GameOverState = new GameOverState();
-            game.setCurrentState(GameOverState);
+            game.setCurrentState(null);
     }
 
 }

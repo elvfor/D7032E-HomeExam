@@ -6,13 +6,12 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import game.gameContext.GameContext;
 import game.logic.GameLogic;
 import player.Player;
 
-public class PickCardAndPassState implements IGameState{
-    private int roundsToRun = 4;
-    private int currentRound = 0;
+public class DraftCardsState implements IGameState{
+    private int roundsToRun = 6;
+    private int currentRound = 0 ;
     @Override
     public void executeAction(ArrayList<Player> players, GameLogic gameLogic, GameContext game) throws IOException {
         if (currentRound < roundsToRun) {
@@ -24,9 +23,9 @@ public class PickCardAndPassState implements IGameState{
                     @Override
                     public void run() {
                         try {
-                            gameLogic.printCurrentDraft(player);
-                            gameLogic.printCurrentHand(player);
-                            player.getPlayerActions().pickCardFromDraft(player);
+                            gameLogic.setCurrentPlayer(player);
+                            gameLogic.printCurrentHand();
+                            player.getPlayerActions().pickCardFromHand(player);
                         } finally {
                             latch.countDown(); // Signal that this task is complete
                         }
@@ -41,17 +40,18 @@ public class PickCardAndPassState implements IGameState{
             } catch (InterruptedException e) {
                 // Handle InterruptedException, if necessary
             }
-    
-            gameLogic.getGameRules().passCards(game.getPlayers());
-            gameLogic.printAllPlayersDraft(game.getPlayers());
             currentRound++;
-
             if(currentRound == roundsToRun) {
+                gameLogic.getGameRules().passLastCards(game.getPlayers());
+                gameLogic.printAllPlayersDraft(game.getPlayers());
                 currentRound = 0;
-                IGameState pickLastCarGameState = new PickLastCardState();
-                game.setCurrentState(pickLastCarGameState);
+                IGameState nexState = new RoundScoreState();
+                game.setCurrentState(nexState);
+            }else{
+                gameLogic.getGameRules().passCards(game.getPlayers());
+                gameLogic.printAllPlayersDraft(game.getPlayers());
             }
+
         }
     }
-    
 }

@@ -9,48 +9,35 @@ import network.Client;
 
 public class Server {
     private ServerSocket serverSocket;
-    private final List<Client> connectedClients = new ArrayList<>();
+    private List<Socket> acceptedSockets = new ArrayList<>();
 
-    public Server(int port){
-    try {
+    public Server(int port, int numClients) {
+        try {
             serverSocket = new ServerSocket(port);
+
+            for (int i = 0; i < numClients; i++) {
+                Socket clientSocket = serverSocket.accept();
+                acceptedSockets.add(clientSocket);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void acceptClient() {
-        try {
-            Socket connectionSocket = serverSocket.accept();
-            //Client client = Client(connectionSocket);
-            //connectedClients.add(client);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public List<Socket> getAcceptedSockets() {
+        return acceptedSockets;
     }
 
-    /*private void manageNewConnection(){
-        Client newClient;
-        try {
-            Socket socket = serverSocket.accept();
-            newClient = Client(socket);
-            clients.add(newClient);
-        } catch (IOException e) {
-        }
-
-        sendConnectionMessage(newClient);
-    }
-    public List<Client> getConnectedClients() {
-        return connectedClients;
-    }*/
-
-    public void disconnectClients() {
-        for (Client client : connectedClients) {
+    public void disconnectAllClients() {
+        System.out.println("Disconnecting connected Clients");
+        for (Socket socket : acceptedSockets) {
             try {
-                client.disconnect();
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        acceptedSockets.clear();
     }
+
 }
