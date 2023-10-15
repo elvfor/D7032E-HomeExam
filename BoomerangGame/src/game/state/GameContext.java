@@ -17,12 +17,9 @@ public class GameContext {
         this.players = players;
         this.gameLogic = gameLogic;
         currentGameRound = 0;
-        setCurrentState(new InitRoundState());
-
-        startGame();
     }
 
-    private void startGame() {
+    public void startGame() {
         while (currentState != null) {
             try {
                 currentState.executeAction(players, gameLogic, this);

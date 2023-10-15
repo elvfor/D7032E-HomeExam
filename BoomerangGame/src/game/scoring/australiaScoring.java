@@ -16,10 +16,10 @@ public class australiaScoring implements IScoring {
     public void roundScore(Player player, GameLogic gameLogic) {
         HashMap<String, Integer> score = new HashMap<String, Integer>();
         score.put("Throw and Catch score", throwCatchScore(player));
-        score.put("Tourist sites score", regionScore(player, gameLogic));
+        score.put("Tourist sites score", roundSitesScore(player));
         score.put("Reion complete score", regionCompleteScore(player, gameLogic));
-        score.put("Collections score", collectionScore(player, gameLogic));
-        score.put("Animals score", animalScore(player, gameLogic));
+        score.put("Collections score", collectionsScore(player));
+        score.put("Animals score", animalScore(player));
         ArrayList<HashMap<String, Integer>> rScore = player.getRScore();
         // activityScore(player, gameLogic);
         score.put("Sctivity Score", additionalScore(player, gameLogic));
@@ -141,18 +141,27 @@ public class australiaScoring implements IScoring {
         }
     }
 
-    private int throwCatchScore(Player player) {
+    private int calculateThrowCatchScore(Player player) {
         // Requirement 10a
         int throwCatchScore = Math.abs(player.getDraft().get(0).getNumber() - player.getDraft().get(6).getNumber());
-        if (player.getPlayerCommunication() != null) {
-            player.getPlayerCommunication()
-                    .sendMessage("This round you scored " + throwCatchScore + " as your Throw and catch score");
-        }
         player.setFinalScore(player.getFinalScore() + throwCatchScore);
         return throwCatchScore;
     }
 
-    private int regionScore(Player player, GameLogic gameLogic) {
+    private void printThrowCatchScore(Player player, int throwCatchScore) {
+        if (player.getPlayerCommunication() != null) {
+            player.getPlayerCommunication()
+                    .sendMessage("This round you scored " + throwCatchScore + " as your Throw and catch score");
+        }
+    }
+
+    public int throwCatchScore(Player player) {
+        int throwCatchScore = calculateThrowCatchScore(player);
+        printThrowCatchScore(player, throwCatchScore);
+        return throwCatchScore;
+    }
+
+    private int calculateRoundSitesScore(Player player) {
         // Requirement 10b
         int thisRoundSites = 0;
         for (Card draftCard : player.getDraft()) {
@@ -162,18 +171,27 @@ public class australiaScoring implements IScoring {
             }
 
         }
-        int regionRoundScore = regionCompleteScore(player, gameLogic);
-        if (player.getPlayerCommunication() != null) {
-            player.getPlayerCommunication().sendMessage("This round you scored " + thisRoundSites
-                    + " new sites points and " + regionRoundScore + " points for completing regions");
-        }
+
         player.setFinalScore(player.getFinalScore() + thisRoundSites);
         return thisRoundSites;
     }
 
-    private int regionCompleteScore(Player player, GameLogic gameLogic) {
+    private void printRoundSitesScore(Player player, int thisRoundSites) {
+        if (player.getPlayerCommunication() != null) {
+            player.getPlayerCommunication()
+                    .sendMessage("This round you scored " + thisRoundSites + " new sites points");
+        }
+    }
+
+    public int roundSitesScore(Player player) {
+        int thisRoundSites = calculateRoundSitesScore(player);
+        printRoundSitesScore(player, thisRoundSites);
+        return thisRoundSites;
+    }
+
+    private int calculateRegionCompleteScore(Player player, GameLogic gameLogic) {
         // Requirement 10b(i+ii)
-        int tempScore = 0;
+        int regionCompleteScore = 0;
         for (int r = 0; r < gameLogic.getRegions().length; r++) {
             boolean regionComplete = false;
             if (!gameLogic.getFinishedRegions().contains(gameLogic.getRegions()[r])
@@ -182,14 +200,14 @@ public class australiaScoring implements IScoring {
                 int prevRoundScore = player.getRegionRoundScore();
                 player.setRegionRoundScore(prevRoundScore += 3);
                 regionComplete = true;
-                tempScore += 3;
+                regionCompleteScore += 3;
             }
             if (regionComplete) {
                 gameLogic.getFinishedRegions().add(gameLogic.getRegions()[r]); // Requirement 10b(ii)
             }
         }
-        player.setFinalScore(player.getFinalScore() + tempScore);
-        return tempScore;
+        player.setFinalScore(player.getFinalScore() + regionCompleteScore);
+        return regionCompleteScore;
     }
 
     private boolean checkRegionComplete(String theRegion, Player player) {
@@ -209,7 +227,20 @@ public class australiaScoring implements IScoring {
             return false;
     }
 
-    private int collectionScore(Player player, GameLogic gameLogic) {
+    private void printRegionCompleteScore(Player player, int regionCompleteScore) {
+        if (player.getPlayerCommunication() != null) {
+            player.getPlayerCommunication()
+                    .sendMessage("This round you scored " + regionCompleteScore + " points for completing regions");
+        }
+    }
+
+    public int regionCompleteScore(Player player, GameLogic gameLogic) {
+        int regionCompleteScore = calculateRegionCompleteScore(player, gameLogic);
+        printRegionCompleteScore(player, regionCompleteScore);
+        return regionCompleteScore;
+    }
+
+    private int calculateCollectionScore(Player player) {
         // Requirement 10c - Calculate score for Collections
         Map<String, Integer> collectionValues = new HashMap<>();
         collectionValues.put("Leaves", 1);
@@ -229,15 +260,26 @@ public class australiaScoring implements IScoring {
         }
 
         int totalCollectionScore = (countRoundCollections <= 7) ? countRoundCollections * 2 : countRoundCollections;
-        if (player.getPlayerCommunication() != null) {
-            player.getPlayerCommunication()
-                    .sendMessage("This round you scored these collections: " + thisRoundCollections);
-        }
+
         player.setFinalScore(player.getFinalScore() + totalCollectionScore);
         return totalCollectionScore;
     }
 
-    private int animalScore(Player player, GameLogic gameLogic) {
+    private void printCollectionScore(Player player, int totalCollectionScore) {
+        if (player.getPlayerCommunication() != null) {
+            player.getPlayerCommunication()
+                    .sendMessage("This round you scored collections for a total of "
+                            + totalCollectionScore + " points");
+        }
+    }
+
+    public int collectionsScore(Player player) {
+        int totalCollectionScore = calculateCollectionScore(player);
+        printCollectionScore(player, totalCollectionScore);
+        return totalCollectionScore;
+    }
+
+    private int calculateAnimalScore(Player player) {
         // Requirement 10d Calculate score for Animals
         Map<String, Integer> animalValues = new HashMap<>();
         animalValues.put("Kangaroos", 3);
@@ -259,11 +301,22 @@ public class australiaScoring implements IScoring {
                 countRoundAnimals += animalPoints;
             }
         }
-        if (player.getPlayerCommunication() != null) {
-            player.getPlayerCommunication().sendMessage("This round you scored these Animals: " + thisRoundAnimals);
-        }
+
         player.setFinalScore(player.getFinalScore() + countRoundAnimals);
         return countRoundAnimals;
+    }
+
+    private void printAnimalScore(Player player, int animalScore) {
+        if (player.getPlayerCommunication() != null) {
+            player.getPlayerCommunication()
+                    .sendMessage("This round you scored: " + animalScore + " points from animals");
+        }
+    }
+
+    public int animalScore(Player player) {
+        int animalScore = calculateAnimalScore(player);
+        printAnimalScore(player, animalScore);
+        return animalScore;
     }
 
     private int numberThings(String aThing, String category, Player player) {
@@ -288,7 +341,7 @@ public class australiaScoring implements IScoring {
         return nrThings;
     }
 
-    private String activityScore(Player player, GameLogic gameLogic) {
+    private String activityScore(Player player) {
         // Requirement 10e Calculate score for the Activities if the player wants to
         // score it
         String[] act = { "Indigenous Culture", "Bushwalking", "Swimming", "Sightseeing" };

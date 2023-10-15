@@ -11,6 +11,7 @@ import game.logic.GameLogicFactory;
 import game.logic.IGameRules;
 import game.scoring.IScoring;
 import game.state.GameContext;
+import game.state.InitRoundState;
 import network.Client;
 import network.Server;
 import player.BotPlayer;
@@ -74,7 +75,8 @@ public class BoomerangGame {
         String version = chooseGameMode(players.get(0));
         String rules = chooseGameRules(players.get(0));
         GameLogic gameLogic = initGameLogic(version, rules);
-        startGame(players, gameLogic);
+        GameContext gameContext = new GameContext(players, gameLogic);
+        startGame(gameContext);
     }
 
     private static String chooseGameMode(Player player) {
@@ -162,15 +164,15 @@ public class BoomerangGame {
         return new GameLogic(gameRules, scoring, cards, regions);
     }
 
-    private static void startGame(ArrayList<Player> players, GameLogic gameLogic) throws IOException {
-        GameContext gameContext = new GameContext(players, gameLogic);
-        endGame(players);
+    private static void startGame(GameContext gameContext) throws IOException {
+        gameContext.setCurrentState(new InitRoundState());
+        gameContext.startGame();
+        endGame();
     }
 
-    private static void endGame(ArrayList<Player> players) {
+    private static void endGame() {
         System.out.println("Game is Over");
         System.exit(0);
-
     }
 
     private static Card[] createCards(String version) {

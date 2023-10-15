@@ -13,9 +13,10 @@ javac -d %OUTPUT_DIR% -cp .;%JUNIT%;%GSON_JAR%  test\*.java
 rem Check if compilation was successful
 if "%errorlevel%"=="0" (
   echo Compilation successful.
-  
+  cd /d "%OUTPUT_DIR%"
+
   rem Run the JUnit tests using JUnitCore
-  java -cp .;%JUNIT%;%OUTPUT_DIR%;%JUNIT% org.junit.runner.JUnitCore test.initGameTest
+  java -cp .;%JUNIT%; org.junit.runner.JUnitCore test.ScoringTest
 ) else (
   echo Compilation failed.
 )
