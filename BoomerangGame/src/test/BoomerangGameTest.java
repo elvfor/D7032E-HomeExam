@@ -1,40 +1,15 @@
 package test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-
-import org.junit.After;
-import org.junit.Before;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import junit.framework.Assert;
 import ltu.card.AustralianCard;
 import ltu.card.Card;
-import ltu.card.CardFactory;
-import ltu.card.ICardFactory;
+
 import ltu.main.BoomerangGame;
 
 public class BoomerangGameTest {
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-    private final PrintStream originalErr = System.err;
     private BoomerangGame BoomerangGameTest = null;
-
-    @Before
-    public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-        System.setErr(new PrintStream(errContent));
-
-    }
-
-    @After
-    public void restoreStreams() {
-        System.setOut(originalOut);
-        System.setErr(originalErr);
-    }
 
     // Requirement 1
     @Test

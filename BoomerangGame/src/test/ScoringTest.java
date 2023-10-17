@@ -23,6 +23,7 @@ public class ScoringTest {
 
     private GameLogic gameLogic = new GameLogic(null, testAustraliaScoring, null, regions);
     private Player testPlayer1 = null;
+    private Player testPlayer2 = null;
 
     @Before
     public void initPlayer1() throws IOException {
@@ -47,6 +48,7 @@ public class ScoringTest {
 
     @Before
     public void initPlayer2() throws IOException {
+        testPlayer2 = new Player(1, null);
         testAustraliaScoring = new australiaScoring();
         testDraft2 = new ArrayList<>(); // Initialize testDraft1
         testDraft2
@@ -161,4 +163,11 @@ public class ScoringTest {
         assertEquals(0, testAustraliaScoring.animalScore(testPlayer1));
     }
 
+    @Test
+    public void testWinner() throws Exception {
+        testPlayer1.setFinalScore(118);
+        testPlayer2.setFinalScore(110);
+
+        assertEquals(0, testAustraliaScoring.animalScore(testPlayer1));
+    }
 }

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,14 +13,11 @@ import ltu.game.logic.GameLogic;
 import ltu.game.logic.GameLogicFactory;
 import ltu.game.logic.IGameRules;
 import ltu.game.scoring.IScoring;
-import ltu.game.state.DraftCardsState;
 import ltu.game.state.GameContext;
-import ltu.game.state.IGameState;
 import ltu.game.state.InitRoundState;
 import ltu.main.BoomerangGame;
 import ltu.player.Player;
 import ltu.player.actions.BotPlayerActionsStandard;
-import ltu.player.actions.HumanPlayerActionsStandard;
 import ltu.player.actions.IPlayerActions;
 
 public class InitRoundStateTest {

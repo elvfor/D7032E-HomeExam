@@ -49,14 +49,20 @@ public class GameLogic {
     }
 
     public void printCurrentHand(Player player) {
-        if (player.getPlayerCommunication() != null) {
-            player.getPlayerCommunication().sendMessage(
-                    "\n*****************************\nYour current hand: \n" + printCards(player.getHand()));
-        }
-
+        printMessage(player, printOfCurrentHand(player));
     }
 
-    private String printCards(ArrayList<Card> cards) {
+    public String printOfCurrentHand(Player player) {
+        return "\n*****************************\nYour current hand: \n" + printCards(player.getHand());
+    }
+
+    public void printMessage(Player player, String message) {
+        if (player.getPlayerCommunication() != null) {
+            player.getPlayerCommunication().sendMessage(message);
+        }
+    }
+
+    public String printCards(ArrayList<Card> cards) {
         StringBuilder printString = new StringBuilder();
 
         for (Card card : cards) {
@@ -118,16 +124,30 @@ public class GameLogic {
 
     public void printAllPlayersDraft(ArrayList<Player> players) {
         for (int pID = 0; pID < players.size(); pID++) {
-            for (Player sendToPlayer : players) {
-                Player id = players.get(pID);
-                if (sendToPlayer.getDraft().size() != 1) {
-                    if (sendToPlayer.getPlayerCommunication() != null) {
-                        sendToPlayer.getPlayerCommunication().sendMessage("\nPlayer " + pID + " has drafted\n"
-                                + printCards(new ArrayList<>(id.getDraft().subList(1, id.getDraft().size()))));
-                    }
+            Player currentPlayer = players.get(pID);
+            String draftMessage = generateDraftMessage(players, pID);
+
+            printMessage(currentPlayer, draftMessage);
+        }
+    }
+
+    public String generateDraftMessage(ArrayList<Player> players, int currentPlayerID) {
+        StringBuilder message = new StringBuilder();
+        for (int pID = 0; pID < players.size(); pID++) {
+            Player player = players.get(pID);
+            if (pID != currentPlayerID) {
+                if (player.getDraft().size() > 1) {
+                    message.append("Player ").append(pID).append(" has drafted\n")
+                            .append(printCards(new ArrayList<>(player.getDraft().subList(1, player.getDraft().size()))))
+                            .append("\n");
+                } else {
+                    message.append("Player ").append(pID).append(" has drafted a hidden Throw Card. \n");
                 }
+
             }
         }
+
+        return message.toString();
     }
 
     public IGameRules getGameRules() {

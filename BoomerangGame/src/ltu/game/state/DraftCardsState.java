@@ -1,4 +1,3 @@
-
 package ltu.game.state;
 
 import java.io.IOException;
@@ -11,16 +10,15 @@ import ltu.game.logic.GameLogic;
 import ltu.player.Player;
 
 public class DraftCardsState implements IGameState {
-    private int roundsToRun = 7;
-    private int currentRound = 1;
 
     @Override
     public void executeAction(ArrayList<Player> players, GameLogic gameLogic, GameContext game) throws IOException {
-        if (currentRound < roundsToRun) {
+        if (game.getCurrentRound() < game.getRoundsToRun()) {
             executeRound(players, gameLogic, game);
-            currentRound++;
+            int round = game.getCurrentRound();
+            game.setCurrentRound(round + 1);
 
-            if (currentRound == roundsToRun) {
+            if (game.getCurrentRound() == game.getRoundsToRun()) {
                 handleLastRound(players, gameLogic, game);
             } else {
                 handleRegularRound(players, gameLogic, game);
@@ -59,7 +57,7 @@ public class DraftCardsState implements IGameState {
     private void handleLastRound(ArrayList<Player> players, GameLogic gameLogic, GameContext game) {
         gameLogic.getGameRules().passLastCards(game.getPlayers());
         gameLogic.printAllPlayersDraft(game.getPlayers());
-        currentRound = 0;
+        game.setCurrentRound(1);
         IGameState nexState = new RoundScoreState();
         game.setCurrentState(nexState);
     }

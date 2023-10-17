@@ -11,11 +11,13 @@ public class InitRoundState implements IGameState {
     @Override
     public void executeAction(ArrayList<Player> players, GameLogic gameLogic, GameContext game) throws IOException {
         game.setCurrentGameRound(game.getCurrentGameRound() + 1);
+        game.setCurrentRound(1);
+        game.setRoundsToRun(7);
         gameLogic.clearBeforeRound(players);
         ArrayList<Card> deck = gameLogic.getDeck(players);
         ArrayList<Card> shuffledCards = gameLogic.getGameRules().shuffleCards(deck);
         gameLogic.getGameRules().dealCards(shuffledCards, players);
-        IGameState nexState = new DraftCardsState();
-        game.setCurrentState(nexState);
+        IGameState nextState = new DraftCardsState();
+        game.setCurrentState(nextState);
     }
 }
