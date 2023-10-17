@@ -3,14 +3,18 @@ package test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
 import junit.framework.Assert;
-import main.BoomerangGame;
+import ltu.card.AustralianCard;
+import ltu.card.Card;
+import ltu.card.CardFactory;
+import ltu.card.ICardFactory;
+import ltu.main.BoomerangGame;
 
 public class BoomerangGameTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -32,40 +36,6 @@ public class BoomerangGameTest {
         System.setErr(originalErr);
     }
 
-    /*
-     * @Test
-     * public void testCheckNrOfPlayerReq() throws Exception {
-     * // Call the method that prints output (BoomerangGame constructor with args)
-     * String[] args = { "2", "1" }; // Adjust the args as needed
-     * new BoomerangGame(args);
-     * 
-     * // Get the captured console output
-     * String output = outputStreamCaptor.toString().trim(); // Remove
-     * // leading/trailing whitespace
-     * 
-     * // Assert that the output contains the expected message
-     * assertEquals(output, ("Initializing game with"));
-     * 
-     * }
-     */
-    /*
-     * @Test
-     * public void testCheckNrOfPlayerReq() throws Exception {
-     * // Call the method that prints output (BoomerangGame constructor with args)
-     * String[] args = { "4", "1" }; // Adjust the args as needed
-     * new BoomerangGame(args);
-     * assertEquals(
-     * "This game is for a total of 2-4 players/bots Server syntax: java BoomerangAustralia numPlayers numBots Client syntax: IP"
-     * ,
-     * outContent.toString());
-     * }
-     * 
-     * @Test
-     * public void err() {
-     * System.err.print("hello again");
-     * assertEquals("hello again", errContent.toString());
-     * }
-     */
     // Requirement 1
     @Test
     public void testCheckNrOfPlayerReqOK() throws Exception {
@@ -83,6 +53,74 @@ public class BoomerangGameTest {
         assertEquals(false, BoomerangGame.checkNrOfPlayerReq(1, 0));
         assertEquals(false, BoomerangGame.checkNrOfPlayerReq(0, 5));
         assertEquals(false, BoomerangGame.checkNrOfPlayerReq(3, 3));
+    }
+
+    // Requirement 2. The deck consists of 28 cards
+    @Test
+    public void testCreateCardsLength() {
+
+        String version = "Australia";
+
+        // Call the createCards method
+        Card[] cards = BoomerangGame.createCards(version);
+
+        // Assertions for the requirements:
+
+        assertEquals(28, cards.length);
+    }
+
+    // Requirement 2a. The name of the tourist site and the corresponding letter
+    // (A-Z)
+    @Test
+    public void testCreateCardsLetters() {
+        String version = "Australia";
+
+        // Call the createCards method
+        Card[] cards = BoomerangGame.createCards(version);
+        for (char siteLetter = 'A'; siteLetter <= 'Z'; siteLetter++) {
+            boolean found = false;
+            for (Card card : cards) {
+                if (card.getLetter().charAt(0) == siteLetter) {
+                    found = true;
+                    break;
+                }
+            }
+            assertTrue("Tourist site name with letter " + siteLetter + " not found", found);
+        }
+    }
+
+    // Requirement 2b. A number (used for calculating the Throw and catch score)
+    @Test
+    public void testCreateCardsNumber() {
+        String version = "Australia";
+
+        Card[] cards = BoomerangGame.createCards(version);
+
+        for (Card card : cards) {
+            assertTrue("Card number should be greater than or equal to 1", card.getNumber() >= 1);
+        }
+    }
+
+    // Requirement 2c. Two of the following additional symbols:
+    @Test
+    public void testCreateCardsSymbols() {
+        String version = "Australia";
+
+        Card[] cards = BoomerangGame.createCards(version);
+
+        for (Card card : cards) {
+            assertTrue("Card should contain additional symbols", hasAdditionalSymbols(card));
+        }
+    }
+
+    private boolean hasAdditionalSymbols(Card card) {
+        if (card instanceof AustralianCard) {
+            AustralianCard acard = (AustralianCard) card;
+            return acard.getCollection() != null || acard.getAnimal() != null || acard.getActivity() != null;
+
+        } else {
+            return false;
+        }
     }
 
 }

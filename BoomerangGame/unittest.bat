@@ -17,7 +17,10 @@ if "%errorlevel%"=="0" (
 
   rem Run the JUnit tests using JUnitCore
   ::java -cp .;%JUNIT%; org.junit.runner.JUnitCore test.ScoringTest
-  java -cp .;%JUNIT%; org.junit.runner.JUnitCore test.BoomerangGameTest
+  java -cp .;%JUNIT%;%GSON_JAR% org.junit.runner.JUnitCore test.BoomerangGameTest
+    java -cp .;%JUNIT%;%GSON_JAR% org.junit.runner.JUnitCore test.InitRoundStateTest
+        java -cp .;%JUNIT%;%GSON_JAR% org.junit.runner.JUnitCore test.DraftCardsStateTest
+
 ) else (
   echo Compilation failed.
 )

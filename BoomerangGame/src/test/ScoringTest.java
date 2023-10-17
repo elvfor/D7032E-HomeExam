@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import card.AustralianCard;
-import card.Card;
-import game.logic.GameLogic;
-import game.scoring.australiaScoring;
-import player.Player;
+import ltu.card.AustralianCard;
+import ltu.game.logic.GameLogic;
+import ltu.game.scoring.australiaScoring;
+import ltu.card.Card;
+import ltu.player.Player;
 
 public class ScoringTest {
     private australiaScoring testAustraliaScoring = new australiaScoring();
