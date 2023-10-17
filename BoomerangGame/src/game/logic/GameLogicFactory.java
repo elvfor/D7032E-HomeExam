@@ -24,5 +24,4 @@ public class GameLogicFactory {
                 throw new IllegalArgumentException("Unsupported rule type: " + type);
         }
     }
-
 }

@@ -16,7 +16,8 @@ if "%errorlevel%"=="0" (
   cd /d "%OUTPUT_DIR%"
 
   rem Run the JUnit tests using JUnitCore
-  java -cp .;%JUNIT%; org.junit.runner.JUnitCore test.ScoringTest
+  ::java -cp .;%JUNIT%; org.junit.runner.JUnitCore test.ScoringTest
+  java -cp .;%JUNIT%; org.junit.runner.JUnitCore test.BoomerangGameTest
 ) else (
   echo Compilation failed.
 )

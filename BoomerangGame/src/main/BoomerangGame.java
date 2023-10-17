@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import card.Card;
 import card.CardFactory;
+import card.ICardFactory;
 import game.logic.GameLogic;
 import game.logic.GameLogicFactory;
 import game.logic.IGameRules;
@@ -25,7 +26,7 @@ import player.communication.LocalPlayerCommunication;
 import player.communication.RemotePlayerCommunication;
 
 public class BoomerangGame {
-    public static void main(String[] args) {
+    public BoomerangGame(String[] args) throws Exception {
         try {
             if (args.length == 1) {
                 playAsRemotePlayer(args);
@@ -35,6 +36,10 @@ public class BoomerangGame {
                 if (checkNrOfPlayerReq(nrOfPlayers, nrOfBots)) {
                     System.out.print("Initializing game with " + (nrOfPlayers) + " players and " + (nrOfBots) + "\n");
                     playAsLocalPlayer(nrOfPlayers, nrOfBots);
+                } else {
+                    System.out.println("This game is for a total of 2-4 players/bots");
+                    System.out.println("Server syntax: java BoomerangAustralia numPlayers numBots");
+                    System.out.println("Client syntax: IP");
                 }
             } else {
                 System.err.println("Invalid number of command-line arguments.");
@@ -55,16 +60,13 @@ public class BoomerangGame {
         setUpGame(nrOfPlayers, nrOfBots);
     }
 
-    private static boolean checkNrOfPlayerReq(int nrOfPlayers, int nrOfbots) throws Exception {
+    public static boolean checkNrOfPlayerReq(int nrOfPlayers, int nrOfbots) throws Exception {
         // Requirement 1, 2-4 players
         if (((nrOfPlayers + nrOfbots) >= 2) && ((nrOfPlayers + nrOfbots) <= 4)) {
             return true;
         } else {
-            System.out.println("This game is for a total of 2-4 players/bots");
-            System.out.println("Server syntax: java BoomerangAustralia numPlayers numBots");
-            System.out.println("Client syntax: IP");
+            return false;
         }
-        return false;
     }
 
     private static void setUpGame(int nrOfPlayers, int nrOfBots) throws IOException {
@@ -137,13 +139,13 @@ public class BoomerangGame {
                     .sendMessage("Waiting for " + (nrOfPlayers - 1) + " players to join.");
             Server server = new Server(port, nrOfPlayers - 1);
             List<Socket> acceptedSockets = server.getAcceptedSockets();
+            int numAcceptedSockets = acceptedSockets.size();
             for (int i = 1; i < nrOfPlayers; i++) {
-                for (Socket acceptedSocket : acceptedSockets) {
-                    IPlayerActions playerActions = new HumanPlayerActionsStandard();
-                    IPlayerCommunication playerCommunication = new RemotePlayerCommunication(acceptedSocket);
-                    HumanPlayer player = new HumanPlayer(i, playerActions, playerCommunication);
-                    players.add(player);
-                }
+                Socket acceptedSocket = acceptedSockets.get(i % numAcceptedSockets); // Use the sockets in a round-robin
+                IPlayerActions playerActions = new HumanPlayerActionsStandard();
+                IPlayerCommunication playerCommunication = new RemotePlayerCommunication(acceptedSocket);
+                HumanPlayer player = new HumanPlayer(i, playerActions, playerCommunication);
+                players.add(player);
             }
         }
     }
@@ -177,9 +179,10 @@ public class BoomerangGame {
 
     private static Card[] createCards(String version) {
         CardFactory cardFactory = new CardFactory();
+        ICardFactory cardCreator = cardFactory.getCardFactory(version);
         Card[] cards;
         try {
-            cards = cardFactory.createCards(version);
+            cards = cardCreator.createCards();
             return cards;
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,13 +192,23 @@ public class BoomerangGame {
 
     private static String[] createRegions(String version) {
         CardFactory cardFactory = new CardFactory();
+        ICardFactory cardCreator = cardFactory.getCardFactory(version);
         String[] regions;
         try {
-            regions = cardFactory.createRegionsFromConfig(version);
+            regions = cardCreator.createRegions();
             return regions;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+
+    }
+
+    public static void main(String argv[]) {
+        try {
+            new BoomerangGame(argv);
+        } catch (Exception e) {
+
+        }
     }
 }

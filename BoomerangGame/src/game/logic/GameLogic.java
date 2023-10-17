@@ -21,30 +21,6 @@ public class GameLogic {
         this.regions = regions;
     }
 
-    public IGameRules getGameRules() {
-        return gameRules;
-    }
-
-    public IScoring getScoring() {
-        return scoring;
-    }
-
-    public Card[] getCards() {
-        return cards;
-    }
-
-    public String[] getRegions() {
-        return regions;
-    }
-
-    public ArrayList<String> getFinishedRegions() {
-        return finishedRegions;
-    }
-
-    public void setCards(Card[] cards) {
-        this.cards = cards;
-    }
-
     public void printCurrentDraft(Player player) {
         if (player.getDraft().size() == 0) {
             if (player.getPlayerCommunication() != null) {
@@ -150,5 +126,29 @@ public class GameLogic {
                 }
             }
         }
+    }
+
+    public IGameRules getGameRules() {
+        return gameRules;
+    }
+
+    public IScoring getScoring() {
+        return scoring;
+    }
+
+    public Card[] getCards() {
+        return cards;
+    }
+
+    public String[] getRegions() {
+        return regions;
+    }
+
+    public ArrayList<String> getFinishedRegions() {
+        return finishedRegions;
+    }
+
+    public void setCards(Card[] cards) {
+        this.cards = cards;
     }
 }
