@@ -3,7 +3,9 @@ package test;
 import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,6 +26,7 @@ public class ScoringTest {
     private GameLogic gameLogic = new GameLogic(null, testAustraliaScoring, null, regions);
     private Player testPlayer1 = null;
     private Player testPlayer2 = null;
+    ArrayList<Player> players;
 
     @Before
     public void initPlayer1() throws IOException {
@@ -62,6 +65,13 @@ public class ScoringTest {
                 .add(new AustralianCard("Melbourne", "U", "Victoria", 2, "", "Wombats", "Bushwalking"));
         testDraft2.add(
                 new AustralianCard("The Whitsundays", "J", "Queensland", 6, "", "Kangaroos", "Indigenous Culture"));
+    }
+
+    @Before
+    public void playerList() throws IOException {
+        players = new ArrayList<Player>();
+        players.add(0, testPlayer1);
+        players.add(1, testPlayer2);
     }
 
     // Requirement 10a
@@ -163,11 +173,73 @@ public class ScoringTest {
         assertEquals(0, testAustraliaScoring.animalScore(testPlayer1));
     }
 
+    // Requirement 10 e
+    @Test
+    public void testActivityScore1() throws Exception {
+        for (Card c : testDraft1) {
+            testPlayer1.getDraft().add(c);
+        }
+        assertEquals(2, testAustraliaScoring.additionalScore(testPlayer1, gameLogic));
+    }
+
+    @Test
+    public void testActivityScore2() throws Exception {
+        for (Card c : testDraft2) {
+            testPlayer2.getDraft().add(c);
+        }
+        assertEquals(4, testAustraliaScoring.additionalScore(testPlayer2, gameLogic));
+    }
+
+    // Requirement 12. Game end. After scoring the fourth round, the game ends.
+    // Players add up all their scores in each category, including the region
+    // bonuses. The highest score wins.
     @Test
     public void testWinner() throws Exception {
         testPlayer1.setFinalScore(118);
         testPlayer2.setFinalScore(110);
+        ArrayList<Player> players2 = new ArrayList<Player>();
+        players2.add(0, testPlayer1);
+        players2.add(0, testPlayer2);
+        Player highScore = gameLogic.calculateWinner(players2);
+        StringBuilder expectedMessage = new StringBuilder();
+        expectedMessage.append("The winner is player: " + 0
+                + " with " + 118 + " points");
 
-        assertEquals(0, testAustraliaScoring.animalScore(testPlayer1));
+        assertEquals(expectedMessage.toString(), gameLogic.printOfWinner(highScore));
     }
+
+    // Requirement 12 a. In the case of a tie, the tied player who scored the most
+    // Throw & Catch points wins.
+    /*
+     * @Test
+     * public void testWinnerTie() throws Exception {
+     * testPlayer1.setFinalScore(110);
+     * testPlayer2.setFinalScore(110);
+     * HashMap<String, Integer> score1 = new HashMap<String, Integer>();
+     * int throwCatchScoreP1 = Math
+     * .abs(testPlayer1.getDraft().get(0).getNumber() -
+     * testPlayer1.getDraft().get(6).getNumber());
+     * testPlayer1.setFinalScore(testPlayer1.getFinalScore() + throwCatchScoreP1);
+     * score1.put("Throw and Catch score", throwCatchScoreP1);
+     * ArrayList<HashMap<String, Integer>> rScore1 = testPlayer1.getRScore();
+     * rScore1.add(score1);
+     * testPlayer1.setRScore(rScore1);
+     * HashMap<String, Integer> score2 = new HashMap<String, Integer>();
+     * int throwCatchScoreP2 = Math
+     * .abs(testPlayer2.getDraft().get(0).getNumber() -
+     * testPlayer2.getDraft().get(6).getNumber());
+     * testPlayer2.setFinalScore(testPlayer1.getFinalScore() + throwCatchScoreP2);
+     * score2.put("Throw and Catch score", throwCatchScoreP2);
+     * ArrayList<HashMap<String, Integer>> rScore2 = testPlayer2.getRScore();
+     * rScore2.add(score2);
+     * testPlayer2.setRScore(rScore2);
+     * Player highScore = gameLogic.calculateWinner(players);
+     * StringBuilder expectedMessage = new StringBuilder();
+     * expectedMessage.append("The winner is player: " + highScore.getPlayerID()
+     * + " with " + highScore.getFinalScore() + " points");
+     * 
+     * assertEquals(expectedMessage.toString(), gameLogic.printOfWinner(highScore));
+     * 
+     * }
+     */
 }

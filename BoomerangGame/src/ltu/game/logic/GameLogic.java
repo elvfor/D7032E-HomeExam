@@ -85,29 +85,38 @@ public class GameLogic {
 
     }
 
-    public void checkWinner(ArrayList<Player> players) {
+    public Player calculateWinner(ArrayList<Player> players) {
         Player highScore = players.get(0);
-        int highScoreThrowCatch = calculateThrowCatchScoreTie(players.get(0));
 
         for (Player player : players) {
-            int currentPlayerThrowCatch = calculateThrowCatchScoreTie(player);
-
-            if (player.getFinalScore() > highScore.getFinalScore()
-                    || (player.getFinalScore() == highScore.getFinalScore()
-                            && currentPlayerThrowCatch > highScoreThrowCatch)) {
+            if (player.getFinalScore() > highScore.getFinalScore()) {
                 highScore = player;
-                highScoreThrowCatch = currentPlayerThrowCatch;
+            } else if (player.getFinalScore() == highScore.getFinalScore()) {
+                int currentPlayerThrowCatch = calculateThrowCatchScoreTie(player);
+                int highScoreThrowCatch = calculateThrowCatchScoreTie(highScore);
+
+                if (currentPlayerThrowCatch > highScoreThrowCatch) {
+                    highScore = player;
+                }
             }
         }
 
-        for (Player player : players) {
-            if (player.getPlayerCommunication() != null) {
+        return highScore;
+    }
 
-                player.getPlayerCommunication().sendMessage("The winner is player: " + players.indexOf(highScore)
-                        + " with " + highScore.getFinalScore() + " points");
-            }
+    public String printOfWinner(Player highScore) {
+        StringBuilder printString = new StringBuilder();
+        printString.append("The winner is player: " + highScore.getPlayerID()
+                + " with " + highScore.getFinalScore() + " points");
+        return printString.toString();
+    }
+
+    public void checkWinner(ArrayList<Player> players) {
+        Player highScore = calculateWinner(players);
+        String winnerString = printOfWinner(highScore);
+        for (Player p : players) {
+            printMessage(p, winnerString);
         }
-
     }
 
     // Add a method to calculate the Throw & Catch score for a player

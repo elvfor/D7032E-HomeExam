@@ -75,14 +75,65 @@ public class australiaScoring implements IScoring {
                     .sendMessage("\n*********************************************\n" +
                             finalScore);
         }
-
-        // (totalT+totalC+totalA+totalAct+(region.size()*3));
     }
 
     @Override
+    /*
+     * public int additionalScore(Player player, GameLogic gameLogic) {
+     * // Requirement 10e Calculate score for the Activities if the player wants to
+     * // score it
+     * 
+     * if (player instanceof HumanPlayer) {
+     * player.getPlayerCommunication().sendMessage(newActivities +
+     * "\nSelect if you wish to score one of them");
+     * int countRoundActivities = 0;
+     * int[] scoreTable = { 0, 2, 4, 7, 10, 15 };
+     * for (Map.Entry<String, Integer> entry : newActivitiesMap.entrySet()) {
+     * int frequency = numberThings(entry.getKey(), "Activities", player);
+     * int scoret = (frequency > 0) ? scoreTable[frequency - 1] : 0;
+     * player.getPlayerCommunication().sendMessage(
+     * "Want to keep " + entry.getKey() + "(" + entry.getValue() + ") [" + scoret +
+     * " points]? (Y/N)");
+     * String response = "";
+     * 
+     * response = player.getPlayerCommunication().receiveInput();
+     * if (response.equalsIgnoreCase("Y")) {
+     * player.getActivitiesScore().put(entry.getKey(), scoret);
+     * player.getPlayerCommunication().sendMessage(
+     * "This round you scored this activity: " + entry.getKey() + "[" + scoret +
+     * " points]");
+     * // We do not need to add the Activity score to the score variable, since it's
+     * // stored separately in the activitiesScore hashmap
+     * countRoundActivities = scoret;
+     * break; // Requirement 10e(i) exit the loop since you are only allowed to
+     * score one
+     * // activity per round
+     * }
+     * }
+     * player.setFinalScore(player.getFinalScore() + countRoundActivities);
+     * return countRoundActivities;
+     * } else {
+     * int countRoundActivities = 0;
+     * int[] scoreTable = { 0, 2, 4, 7, 10, 15 };
+     * for (Map.Entry<String, Integer> entry : newActivitiesMap.entrySet()) {
+     * int frequency = numberThings(entry.getKey(), "Activities", player);
+     * int scoret = (frequency > 0) ? scoreTable[frequency - 1] : 0;
+     * String response = "";
+     * response = "Y";
+     * if (response.equalsIgnoreCase("Y")) {
+     * player.getActivitiesScore().put(entry.getKey(), scoret);
+     * countRoundActivities = scoret;
+     * break; // Requirement 10e(i) exit the loop since you are only allowed to
+     * score one
+     * // activity per round
+     * }
+     * }
+     * player.setFinalScore(player.getFinalScore() + countRoundActivities);
+     * return countRoundActivities;
+     * }
+     * }
+     */
     public int additionalScore(Player player, GameLogic gameLogic) {
-        // Requirement 10e Calculate score for the Activities if the player wants to
-        // score it
         String[] act = { "Indigenous Culture", "Bushwalking", "Swimming", "Sightseeing" };
         if (player.getPlayerCommunication() != null) {
             player.getPlayerCommunication().sendMessage("This round you have gathered the following new activities:");
@@ -96,50 +147,78 @@ public class australiaScoring implements IScoring {
                 newActivitiesMap.put(thisAct, frequency);
             }
         }
-
         if (player instanceof HumanPlayer) {
-            player.getPlayerCommunication().sendMessage(newActivities + "\nSelect if you wish to score one of them");
-            int countRoundActivities = 0;
-            int[] scoreTable = { 0, 2, 4, 7, 10, 15 };
-            for (Map.Entry<String, Integer> entry : newActivitiesMap.entrySet()) {
-                int frequency = numberThings(entry.getKey(), "Activities", player);
-                int scoret = (frequency > 0) ? scoreTable[frequency - 1] : 0;
-                player.getPlayerCommunication().sendMessage(
-                        "Want to keep " + entry.getKey() + "(" + entry.getValue() + ") [" + scoret + " points]? (Y/N)");
-                String response = "";
-
-                response = player.getPlayerCommunication().receiveInput();
-                if (response.equalsIgnoreCase("Y")) {
-                    player.getActivitiesScore().put(entry.getKey(), scoret);
-                    player.getPlayerCommunication().sendMessage(
-                            "This round you scored this activity: " + entry.getKey() + "[" + scoret + " points]");
-                    // We do not need to add the Activity score to the score variable, since it's
-                    // stored separately in the activitiesScore hashmap
-                    countRoundActivities = scoret;
-                    break; // Requirement 10e(i) exit the loop since you are only allowed to score one
-                           // activity per round
-                }
-            }
-            player.setFinalScore(player.getFinalScore() + countRoundActivities);
-            return countRoundActivities;
+            return scoreActivityForHuman(player, newActivities, newActivitiesMap);
         } else {
-            int countRoundActivities = 0;
-            int[] scoreTable = { 0, 2, 4, 7, 10, 15 };
-            for (Map.Entry<String, Integer> entry : newActivitiesMap.entrySet()) {
-                int frequency = numberThings(entry.getKey(), "Activities", player);
-                int scoret = (frequency > 0) ? scoreTable[frequency - 1] : 0;
-                String response = "";
-                response = "Y";
-                if (response.equalsIgnoreCase("Y")) {
-                    player.getActivitiesScore().put(entry.getKey(), scoret);
-                    countRoundActivities = scoret;
-                    break; // Requirement 10e(i) exit the loop since you are only allowed to score one
-                           // activity per round
-                }
-            }
-            player.setFinalScore(player.getFinalScore() + countRoundActivities);
-            return countRoundActivities;
+            return scoreActivityForBot(player, newActivities, newActivitiesMap);
         }
+
+    }
+
+    private int scoreActivityForHuman(Player player, String newActivities, HashMap<String, Integer> newActivitiesMap) {
+        player.getPlayerCommunication().sendMessage(newActivities + "\nSelect if you wish to score one of them");
+        int countRoundActivities = 0;
+        int[] scoreTable = { 0, 2, 4, 7, 10, 15 };
+        for (Map.Entry<String, Integer> entry : newActivitiesMap.entrySet()) {
+            int frequency = numberThings(entry.getKey(), "Activities", player);
+            int scoret = (frequency > 0) ? scoreTable[frequency - 1] : 0;
+            player.getPlayerCommunication().sendMessage(
+                    "Want to keep " + entry.getKey() + "(" + entry.getValue() + ") [" + scoret + " points]? (Y/N)");
+            String response = "";
+
+            response = player.getPlayerCommunication().receiveInput();
+            if (response.equalsIgnoreCase("Y")) {
+                player.getActivitiesScore().put(entry.getKey(), scoret);
+                player.getPlayerCommunication().sendMessage(
+                        "This round you scored this activity: " + entry.getKey() + "[" + scoret + " points]");
+                // We do not need to add the Activity score to the score variable, since it's
+                // stored separately in the activitiesScore hashmap
+                countRoundActivities = scoret;
+                break; // Requirement 10e(i) exit the loop since you are only allowed to score one
+                       // activity per round
+            }
+        }
+        player.setFinalScore(player.getFinalScore() + countRoundActivities);
+        return countRoundActivities;
+    }
+
+    private HashMap<String, Integer> gatherNewActivities(Player player, String[] activities) {
+        HashMap<String, Integer> newActivitiesMap = new HashMap<>();
+        String newActivities = "";
+
+        for (String thisAct : activities) {
+            if (!player.getActivitiesScore().containsKey(thisAct)) {
+                int frequency = numberThings(thisAct, "Activities", player);
+                newActivities += thisAct + "(# " + frequency + ")\t";
+                newActivitiesMap.put(thisAct, frequency);
+            }
+        }
+
+        if (player.getPlayerCommunication() != null) {
+            player.getPlayerCommunication().sendMessage("This round you have gathered the following new activities:");
+            player.getPlayerCommunication().sendMessage(newActivities + "\nSelect if you wish to score one of them");
+        }
+
+        return newActivitiesMap;
+    }
+
+    private int scoreActivityForBot(Player player, String newActivities, HashMap<String, Integer> newActivitiesMap) {
+        int countRoundActivities = 0;
+        int[] scoreTable = { 0, 2, 4, 7, 10, 15 };
+        for (Map.Entry<String, Integer> entry : newActivitiesMap.entrySet()) {
+            int frequency = numberThings(entry.getKey(), "Activities", player);
+            int scoret = (frequency > 0) ? scoreTable[frequency - 1] : 0;
+            String response = "";
+            response = "Y";
+            if (response.equalsIgnoreCase("Y")) {
+                player.getActivitiesScore().put(entry.getKey(), scoret);
+                countRoundActivities = scoret;
+                break; // Requirement 10e(i) exit the loop since you are only allowed to score one
+                       // activity per round
+            }
+        }
+        player.setFinalScore(player.getFinalScore() + countRoundActivities);
+        return countRoundActivities;
     }
 
     private int calculateThrowCatchScore(Player player) {
