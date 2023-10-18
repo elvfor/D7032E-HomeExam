@@ -9,6 +9,10 @@ import ltu.game.logic.GameLogic;
 import ltu.card.Card;
 import ltu.card.CardFactory;
 import ltu.card.ICardFactory;
+import ltu.exception.ClientConnectionException;
+import ltu.exception.InvalidGameModeException;
+import ltu.exception.InvalidGameRuleException;
+import ltu.exception.InvalidNrOfPlayersException;
 import ltu.game.logic.GameLogicFactory;
 import ltu.game.logic.IGameRules;
 import ltu.game.scoring.IScoring;
@@ -27,41 +31,46 @@ import ltu.player.actions.BotPlayerActionsStandard;
 import ltu.player.communication.IPlayerCommunication;
 
 public class BoomerangGame {
-    public BoomerangGame(String[] args) throws Exception {
-        try {
-            if (args.length == 1) {
-                playAsRemotePlayer(args);
-            } else if (args.length == 2) {
-                int nrOfPlayers = Integer.parseInt(args[0]);
-                int nrOfBots = Integer.parseInt(args[1]);
-                if (checkNrOfPlayerReq(nrOfPlayers, nrOfBots)) {
-                    System.out.print("Initializing game with " + (nrOfPlayers) + " players and " + (nrOfBots) + "\n");
-                    playAsLocalPlayer(nrOfPlayers, nrOfBots);
-                } else {
-                    System.out.println("This game is for a total of 2-4 players/bots");
-                    System.out.println("Server syntax: java BoomerangAustralia numPlayers numBots");
-                    System.out.println("Client syntax: IP");
-                }
-            } else {
-                System.err.println("Invalid number of command-line arguments.");
-                System.err
-                        .println("Usage: java BoomerangGame <ipAddress> OR java BoomerangGame <numPlayers> <numBots>");
+    public BoomerangGame(String[] args) throws ClientConnectionException, IOException {
+        if (args.length == 1) {
+            playAsRemotePlayer(args);
+        } else if (args.length == 2) {
+            int nrOfPlayers = Integer.parseInt(args[0]);
+            int nrOfBots = Integer.parseInt(args[1]);
+            try {
+                initializeGame(nrOfPlayers, nrOfBots);
+            } catch (InvalidNrOfPlayersException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            System.out.println("Server syntax: java BoomerangAustralia numPlayers numBots");
+            System.out.println("Client syntax: IP");
         }
     }
 
-    private static void playAsRemotePlayer(String[] args) throws Exception {
+    private void initializeGame(int nrOfPlayers, int nrOfBots) throws InvalidNrOfPlayersException, IOException {
+        if (checkNrOfPlayerReq(nrOfPlayers, nrOfBots)) {
+            System.out.println("Initializing game with " + nrOfPlayers + " players and " + nrOfBots);
+            playAsLocalPlayer(nrOfPlayers, nrOfBots);
+        } else {
+            throw new InvalidNrOfPlayersException("Invalid number of players. This game is for 2-4 players/bots.");
+        }
+    }
+
+    private static void playAsRemotePlayer(String[] args) throws ClientConnectionException {
         String ipAddress = args[0];
-        Client client = new Client(ipAddress);
+        try {
+            Client client = new Client(ipAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void playAsLocalPlayer(int nrOfPlayers, int nrOfBots) throws IOException {
         setUpGame(nrOfPlayers, nrOfBots);
     }
 
-    public static boolean checkNrOfPlayerReq(int nrOfPlayers, int nrOfbots) throws Exception {
+    public static boolean checkNrOfPlayerReq(int nrOfPlayers, int nrOfbots) {
         // Requirement 1, 2-4 players
         if (((nrOfPlayers + nrOfbots) >= 2) && ((nrOfPlayers + nrOfbots) <= 4)) {
             return true;
@@ -75,23 +84,42 @@ public class BoomerangGame {
         addLocalPlayer(players);
         addRemotePlayers(players, nrOfPlayers);
         addBotPlayers(players, nrOfPlayers, nrOfBots);
-        String version = chooseGameMode(players.get(0));
-        String rules = chooseGameRules(players.get(0));
+        String version;
+        try {
+            version = chooseGameMode(players.get(0));
+        } catch (InvalidGameModeException e) {
+            System.err.println("Error: " + e.getMessage());
+
+            version = "Australia"; // for now, set default version
+        }
+        String rules;
+        try {
+            rules = chooseGameRules(players.get(0));
+        } catch (InvalidGameRuleException e) {
+            System.err.println("Error: " + e.getMessage());
+
+            rules = "Standard"; // for now, set default version
+        }
         GameLogic gameLogic = initGameLogic(version, rules);
         GameContext gameContext = new GameContext(players, gameLogic);
         startGame(gameContext);
     }
 
-    private static String chooseGameMode(Player player) {
-        String response = "";
-        player.getPlayerCommunication().sendMessage("Game Mode Australia? Y/N");
-        response = player.getPlayerCommunication().receiveInput();
-        if ("Y".equalsIgnoreCase(response)) {
-            return "Australia";
-        } else {
-            player.getPlayerCommunication()
-                    .sendMessage("Currently no other Game Modes avaliable. Automatically set as Australia");
-            return "Australia";
+    private static String chooseGameMode(Player player) throws InvalidGameModeException {
+        while (true) {
+            String response = "";
+            player.getPlayerCommunication().sendMessage("Game Mode Australia? Y/N");
+            response = player.getPlayerCommunication().receiveInput();
+
+            if ("Y".equalsIgnoreCase(response)) {
+                return "Australia";
+            } else if ("N".equalsIgnoreCase(response)) {
+                throw new InvalidGameModeException(
+                        "Currently no other Game Modes available. Automatically set as Australia");
+            } else {
+                // Invalid input, prompt to choose again
+                player.getPlayerCommunication().sendMessage("Invalid input. Please choose 'Y' or 'N'.");
+            }
         }
     }
 
@@ -113,17 +141,22 @@ public class BoomerangGame {
         }
     }
 
-    private static String chooseGameRules(Player player) {
-        String response = "";
-        player.getPlayerCommunication().sendMessage("Standard Game Rules Y/N");
-        response = player.getPlayerCommunication().receiveInput();
-        if ("Y".equalsIgnoreCase(response)) {
-            return "Standard";
-        } else {
-            player.getPlayerCommunication()
-                    .sendMessage("Currently no other rules avaliable. Automatically set as Standard");
-            return "Standard";
+    private static String chooseGameRules(Player player) throws InvalidGameRuleException {
+        while (true) {
+            String response = "";
+            player.getPlayerCommunication().sendMessage("Standard Game Rules Y/N");
+            response = player.getPlayerCommunication().receiveInput();
+            if ("Y".equalsIgnoreCase(response)) {
+                return "Standard";
+            } else if ("N".equalsIgnoreCase(response)) {
+                throw new InvalidGameRuleException(
+                        "Currently no other Game Rules available. Automatically set as Standard");
+            } else {
+                // Invalid input, prompt to choose again
+                player.getPlayerCommunication().sendMessage("Invalid input. Please choose 'Y' or 'N'.");
+            }
         }
+
     }
 
     private static void addLocalPlayer(ArrayList<Player> players) {

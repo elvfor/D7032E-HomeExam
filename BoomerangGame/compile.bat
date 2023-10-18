@@ -7,7 +7,7 @@ rem Compile all Java source files
 set GSON_JAR=..\lib\gson-2.8.6.jar
 @mkdir ..\bin
 set OUTPUT_DIR=..\bin
-javac -d %OUTPUT_DIR% -cp .;%GSON_JAR%  ltu\card\*.java ltu\game\logic\*.java ltu\game\scoring\*.java ltu\game\state\*.java ltu\main\*.java ltu\network\*.java  ltu\player\*.java ltu\player\actions\*.java ltu\player\communication\*.java
+javac -d %OUTPUT_DIR% -cp .;%GSON_JAR%  ltu\card\*.java ltu\exception\*.java ltu\game\logic\*.java ltu\game\scoring\*.java ltu\game\state\*.java ltu\main\*.java ltu\network\*.java  ltu\player\*.java ltu\player\actions\*.java ltu\player\communication\*.java
 rem Check if compilation was successful
 if "%errorlevel%"=="0" (
   echo Compilation successful.
