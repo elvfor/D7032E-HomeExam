@@ -6,6 +6,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class holds the logic for setting up the game server on a certain port.
+ * Accepts joinging clients sockets and hold them
+ */
 public class Server {
     private ServerSocket serverSocket;
     private List<Socket> acceptedSockets = new ArrayList<>();

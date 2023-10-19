@@ -30,6 +30,10 @@ import ltu.network.Client;
 import ltu.player.actions.BotPlayerActionsStandard;
 import ltu.player.communication.IPlayerCommunication;
 
+/**
+ * This class handles managing of the gameplay and high-level game logic. Sets
+ * up and starts game.
+ */
 public class BoomerangGame {
     public BoomerangGame(String[] args) throws ClientConnectionException, IOException {
         if (args.length == 1) {
@@ -70,6 +74,11 @@ public class BoomerangGame {
         setUpGame(nrOfPlayers, nrOfBots);
     }
 
+    /**
+     * @param nrOfPlayers
+     * @param nrOfbots
+     * @return boolean
+     */
     public static boolean checkNrOfPlayerReq(int nrOfPlayers, int nrOfbots) {
         // Requirement 1, 2-4 players
         if (((nrOfPlayers + nrOfbots) >= 2) && ((nrOfPlayers + nrOfbots) <= 4)) {
@@ -211,6 +220,11 @@ public class BoomerangGame {
         System.exit(0);
     }
 
+    // should be package public for testing
+    /**
+     * @param version The Game Mode Version to create cards to, ex Australia
+     * @return Card[] An Array of cards related to the version
+     */
     public static Card[] createCards(String version) {
         CardFactory cardFactory = new CardFactory();
         ICardFactory cardCreator = cardFactory.getCardFactory(version);
@@ -224,6 +238,11 @@ public class BoomerangGame {
         return null;
     }
 
+    // should be package public for testing
+    /**
+     * @param version The Game Mode Version to create cards to, ex Australia
+     * @return String[] An Array of the regions related to the version
+     */
     public static String[] createRegions(String version) {
         CardFactory cardFactory = new CardFactory();
         ICardFactory cardCreator = cardFactory.getCardFactory(version);
@@ -238,6 +257,9 @@ public class BoomerangGame {
 
     }
 
+    /**
+     * @param argv[] Entering the Game, either an IP adress or nrOfPlayers nrOfBots
+     */
     public static void main(String argv[]) {
         try {
             new BoomerangGame(argv);

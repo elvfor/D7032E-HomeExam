@@ -13,6 +13,11 @@ public class AustralianCardFactory implements ICardFactory {
     private Card[] arrayDeck;
     private String[] regions;
 
+    /**
+     * @return Card[] Used by factory to create cards from JSON file, returns the
+     *         array of created cards
+     * @throws IOException if something goes wrong with creating the cards
+     */
     @Override
     public Card[] createCards() throws IOException {
         Card[] arrayDeck;
@@ -33,6 +38,11 @@ public class AustralianCardFactory implements ICardFactory {
         return arrayDeck;
     }
 
+    /**
+     * @return String[] The array of regions that are created from a certain JSON
+     *         file
+     * @throws IOException if something goes wrong when creating the regions
+     */
     public String[] createRegions() throws IOException {
         // Create a card based on the version
 

@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+/**
+ * This class represents how a remote player can communicate with the game.
+ * Implements the IPlayerCommunication interface
+ */
 public class RemotePlayerCommunication implements IPlayerCommunication {
     private Socket socket;
     private ObjectInputStream inputStream;
@@ -21,6 +25,9 @@ public class RemotePlayerCommunication implements IPlayerCommunication {
         }
     }
 
+    /**
+     * @param message Takes the message the game has sent to the player
+     */
     @Override
     public void sendMessage(String message) {
         try {
@@ -29,6 +36,10 @@ public class RemotePlayerCommunication implements IPlayerCommunication {
         }
     }
 
+    /**
+     * @return String The string that the player sends for the game to recive as
+     *         input
+     */
     @Override
     public String receiveInput() {
         String word = "";

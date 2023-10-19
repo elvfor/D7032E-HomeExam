@@ -15,6 +15,10 @@ import ltu.game.scoring.australiaScoring;
 import ltu.card.Card;
 import ltu.player.Player;
 
+/**
+ * This class holds test for the all the Scpring functions test requirements
+ * 10-12
+ */
 public class ScoringTest {
     private australiaScoring testAustraliaScoring = new australiaScoring();
     private ArrayList<Card> testDraft1 = null;

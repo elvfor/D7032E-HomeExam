@@ -11,8 +11,16 @@ import ltu.card.Card;
 import ltu.player.HumanPlayer;
 import ltu.player.Player;
 
+/**
+ * This class is responsible for calculating the player's score when playing the
+ * Australian Game Mode. Implements the generic scoring interface
+ */
 public class australiaScoring implements IScoring {
 
+    /**
+     * @param player    The player to calculate score for
+     * @param gameLogic The object that holds the logic for this game round
+     */
     @Override
     public void roundScore(Player player, GameLogic gameLogic) {
         HashMap<String, Integer> score = new HashMap<String, Integer>();
@@ -28,6 +36,10 @@ public class australiaScoring implements IScoring {
         player.setRScore(rScore);
     }
 
+    /**
+     * @param player    The player to print out final score for
+     * @param gameLogic The object that holds the logic for this game round
+     */
     @Override
     public void totalScore(Player player, GameLogic gameLogic) {
         String t = "Throw and Catch score", to = "Tourist sites score", c = "Collections score", a = "Animals score";
@@ -77,6 +89,11 @@ public class australiaScoring implements IScoring {
         }
     }
 
+    /**
+     * @param player    The player who should be prompted to choose/calculate the
+     *                  activity score
+     * @param gameLogic The object that holds the logic for this game round
+     */
     @Override
     public int additionalScore(Player player, GameLogic gameLogic) {
         String[] act = { "Indigenous Culture", "Bushwalking", "Swimming", "Sightseeing" };
@@ -170,6 +187,11 @@ public class australiaScoring implements IScoring {
         }
     }
 
+    // Should be package protected for testing
+    /**
+     * @param player The player to calculate score for
+     * @return int The throw and catch score for this draft
+     */
     public int throwCatchScore(Player player) {
         int throwCatchScore = calculateThrowCatchScore(player);
         printThrowCatchScore(player, throwCatchScore);
@@ -198,6 +220,11 @@ public class australiaScoring implements IScoring {
         }
     }
 
+    // Should be package protected for testing
+    /**
+     * @param player The player to calculate score for
+     * @return int The score for sites for this draft
+     */
     public int roundSitesScore(Player player) {
         int thisRoundSites = calculateRoundSitesScore(player);
         printRoundSitesScore(player, thisRoundSites);
@@ -249,6 +276,11 @@ public class australiaScoring implements IScoring {
         }
     }
 
+    // Should be package protected for testing
+    /**
+     * @param player The player to calculate score for
+     * @return int The score for completing a region during a round for this draft
+     */
     public int regionCompleteScore(Player player, GameLogic gameLogic) {
         int regionCompleteScore = calculateRegionCompleteScore(player, gameLogic);
         printRegionCompleteScore(player, regionCompleteScore);
@@ -288,6 +320,11 @@ public class australiaScoring implements IScoring {
         }
     }
 
+    // Should be package protected for testing
+    /**
+     * @param player The player to calculate score for
+     * @return int The collections score for this draft
+     */
     public int collectionsScore(Player player) {
         int totalCollectionScore = calculateCollectionScore(player);
         printCollectionScore(player, totalCollectionScore);
@@ -328,6 +365,11 @@ public class australiaScoring implements IScoring {
         }
     }
 
+    // Should be package protected for testing
+    /**
+     * @param player The player to calculate score for
+     * @return int The animal score for this draft
+     */
     public int animalScore(Player player) {
         int animalScore = calculateAnimalScore(player);
         printAnimalScore(player, animalScore);

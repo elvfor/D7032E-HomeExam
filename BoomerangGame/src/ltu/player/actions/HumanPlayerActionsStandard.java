@@ -4,8 +4,17 @@ import ltu.card.Card;
 import ltu.exception.InvalidCardSelectionException;
 import ltu.player.Player;
 
+/**
+ * This class represents the standard logic a human player has during the game.
+ * Implements the IPlayerActions interface and has logic for allowing the player
+ * to choose
+ * from its hand. Uses each players abstrasction of communication for
+ * interaction with player.
+ */
 public class HumanPlayerActionsStandard implements IPlayerActions {
-
+    /**
+     * @param player The human player who excetue the pick card action
+     */
     @Override
     public void pickCardFromHand(Player player) {
         player.getPlayerCommunication().sendMessage("Type the letter of the card to draft. ");

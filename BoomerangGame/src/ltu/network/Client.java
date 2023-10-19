@@ -8,6 +8,11 @@ import java.util.Scanner;
 
 import ltu.exception.ClientConnectionException;
 
+/**
+ * This class represents the logic that connects a remote player to the game. It
+ * takes the inputed ip address, establishes a connection to the game server and
+ * communicates via with to the game
+ */
 public class Client {
 
     public Client(String ipAddress) throws ClientConnectionException, ClassNotFoundException {

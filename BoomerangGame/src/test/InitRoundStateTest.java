@@ -20,6 +20,9 @@ import ltu.player.Player;
 import ltu.player.actions.BotPlayerActionsStandard;
 import ltu.player.actions.IPlayerActions;
 
+/**
+ * This class holds test for the InitRoundState class and test requirements 3-4
+ */
 public class InitRoundStateTest {
     InitRoundState initState;
     GameLogic mockGameLogic;

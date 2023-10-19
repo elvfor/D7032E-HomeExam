@@ -9,8 +9,21 @@ import java.util.concurrent.Executors;
 import ltu.game.logic.GameLogic;
 import ltu.player.Player;
 
+/**
+ * This class represents the state that calculates and prints the score after
+ * the last game round is played and take the players to the final state/end the
+ * game
+ * Implements
+ * the IGameState.
+ */
 public class LastRoundScoringState implements IGameState {
-
+    /**
+     * @param players   All players in the game
+     * @param gameLogic The object that holds game logic such as which scoring and
+     *                  rules
+     * @param game      The object that controls the state pattern
+     * @throws IOException
+     */
     @Override
     public void executeAction(ArrayList<Player> players, GameLogic gameLogic, GameContext game) throws IOException {
         calculateFinalScores(players, gameLogic, game);

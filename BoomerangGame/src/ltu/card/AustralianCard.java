@@ -2,6 +2,10 @@ package ltu.card;
 
 import java.util.ArrayList;
 
+/**
+ * This class is for Australian Cards. Has setters and getters and a PrintCards
+ * from the implemented ICardFunctionalities interface
+ */
 public class AustralianCard extends Card {
     private String Collection, Animal, Activity;
 
@@ -13,14 +17,23 @@ public class AustralianCard extends Card {
         this.Activity = Activity;
     }
 
+    /**
+     * @return String get Collection
+     */
     public String getCollection() {
         return Collection;
     }
 
+    /**
+     * @return String get Animal
+     */
     public String getAnimal() {
         return Animal;
     }
 
+    /**
+     * @return String get Activity
+     */
     public String getActivity() {
         return Activity;
     }
@@ -62,6 +75,10 @@ public class AustralianCard extends Card {
         return printString;
     }
 
+    /**
+     * @param card Send in Australian card that should be printed
+     * @return String the string that represents the card and its qualities
+     */
     @Override
     public String printCard(Card card) {
         String printString = String.format("%27s", "Site [letter] (nr): ");

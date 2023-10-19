@@ -20,6 +20,9 @@ import ltu.player.Player;
 import ltu.player.actions.BotPlayerActionsStandard;
 import ltu.player.actions.IPlayerActions;
 
+/**
+ * This class holds test for the DraftCardsState class and test requirements 5-9
+ */
 public class DraftCardsStateTest {
 
     DraftCardsState draftCardsState;
@@ -236,7 +239,7 @@ public class DraftCardsStateTest {
         player3.getHand().add(cards[16]);
         player3.getHand().add(cards[17]);
         player3.getHand().add(cards[18]);
-        player3.getHand().add(cards[1]);
+        player3.getHand().add(cards[19]);
         player3.getHand().add(cards[20]);
         gameContext.setCurrentRound(1);
         gameContext.setRoundsToRun(7);

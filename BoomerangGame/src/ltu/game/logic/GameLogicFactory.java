@@ -5,6 +5,10 @@ import ltu.game.scoring.IScoring;
 import ltu.game.logic.standardGameRules;
 import ltu.game.scoring.australiaScoring;
 
+/**
+ * This class is used for abstracting the creating of rules and scoring
+ * mechanisms
+ */
 public class GameLogicFactory {
     public static IScoring createScoring(String version) {
         switch (version) {

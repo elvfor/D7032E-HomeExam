@@ -8,6 +8,9 @@ import ltu.card.Card;
 
 import ltu.main.BoomerangGame;
 
+/**
+ * This class holds test for the BoomerangGame class and test requirements 1-2
+ */
 public class BoomerangGameTest {
     private BoomerangGame BoomerangGameTest = null;
 

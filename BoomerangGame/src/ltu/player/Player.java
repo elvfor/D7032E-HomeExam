@@ -7,6 +7,11 @@ import ltu.card.Card;
 import ltu.player.actions.IPlayerActions;
 import ltu.player.communication.IPlayerCommunication;
 
+/**
+ * This class represents the player who plays the game. Has abstractions of the
+ * actions it can take during the game and abstraction of hpw it communicates
+ * with the game. Also holds its own scoring points
+ */
 public class Player {
     private IPlayerActions playerActions;
     private int playerID;

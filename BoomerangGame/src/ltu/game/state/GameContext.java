@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import ltu.game.logic.GameLogic;
 import ltu.player.Player;
 
+/**
+ * This class holds the context for a certain game and handles the states of the
+ * game. Has
+ * abstrasctions of the logic (whioch holds chosen rules and scoring) and all
+ * players for this round
+ */
 public class GameContext {
 
     private ArrayList<Player> players;
@@ -21,6 +27,9 @@ public class GameContext {
         currentGameRound = 0;
     }
 
+    /**
+     * Always execute the next state as long as there is a state to execute on
+     */
     public void startGame() {
         while (currentState != null) {
             try {

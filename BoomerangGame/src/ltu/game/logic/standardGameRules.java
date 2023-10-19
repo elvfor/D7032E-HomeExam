@@ -6,6 +6,10 @@ import java.util.Collections;
 import ltu.card.Card;
 import ltu.player.Player;
 
+/**
+ * This class implements the rules interface and creates logic for a standard
+ * game mode, such as how to deal cards and how to pass cards between players
+ */
 public class standardGameRules implements IGameRules {
 
     @Override

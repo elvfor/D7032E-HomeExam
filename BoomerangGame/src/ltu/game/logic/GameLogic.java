@@ -7,6 +7,12 @@ import ltu.card.Card;
 import ltu.player.Player;
 import ltu.game.scoring.IScoring;
 
+/**
+ * This class is responsible for the logic that the game requires to function.
+ * Has abstreactions of the rules and socring as well as generic functions used
+ * for all
+ * modes, all rules and scoring
+ */
 public class GameLogic {
     private IGameRules gameRules;
     private IScoring scoring;
@@ -48,20 +54,35 @@ public class GameLogic {
         }
     }
 
+    /**
+     * @param player Player whos hand wants printed
+     */
     public void printCurrentHand(Player player) {
         printMessage(player, printOfCurrentHand(player));
     }
 
+    /**
+     * @param player Player whos hand wants printed
+     * @return String String that holds a print of the current hand
+     */
     public String printOfCurrentHand(Player player) {
         return "\n*****************************\nYour current hand: \n" + printCards(player.getHand());
     }
 
+    /**
+     * @param player  Player to send message to
+     * @param message The message to send
+     */
     public void printMessage(Player player, String message) {
         if (player.getPlayerCommunication() != null) {
             player.getPlayerCommunication().sendMessage(message);
         }
     }
 
+    /**
+     * @param cards An array of the cards that want to be printed
+     * @return String The array/cards in the form of a string
+     */
     public String printCards(ArrayList<Card> cards) {
         StringBuilder printString = new StringBuilder();
 
@@ -72,6 +93,9 @@ public class GameLogic {
         return printString.toString();
     }
 
+    /**
+     * @param players All the players of the game
+     */
     public void printAfterRound(ArrayList<Player> players) {
         for (Player player : players) {
             if (player.getPlayerCommunication() != null) {
@@ -85,6 +109,10 @@ public class GameLogic {
 
     }
 
+    /**
+     * @param players Players from game to calculate winner
+     * @return Player The winner of the game
+     */
     public Player calculateWinner(ArrayList<Player> players) {
         Player highScore = players.get(0);
 
@@ -104,6 +132,10 @@ public class GameLogic {
         return highScore;
     }
 
+    /**
+     * @param highScore Player who won
+     * @return String String tha prints player who won
+     */
     public String printOfWinner(Player highScore) {
         StringBuilder printString = new StringBuilder();
         printString.append("The winner is player: " + highScore.getPlayerID()
@@ -111,6 +143,10 @@ public class GameLogic {
         return printString.toString();
     }
 
+    /**
+     * @param players Array of all players from game who should be used to find
+     *                winner
+     */
     public void checkWinner(ArrayList<Player> players) {
         Player highScore = calculateWinner(players);
         String winnerString = printOfWinner(highScore);
@@ -119,7 +155,6 @@ public class GameLogic {
         }
     }
 
-    // Add a method to calculate the Throw & Catch score for a player
     private int calculateThrowCatchScoreTie(Player player) {
         int totalT = 0;
         String t = "Throw and Catch score";
@@ -131,6 +166,9 @@ public class GameLogic {
         return totalT;
     }
 
+    /**
+     * @param players The players who's draft should be printed after each round
+     */
     public void printAllPlayersDraft(ArrayList<Player> players) {
         for (int pID = 0; pID < players.size(); pID++) {
             Player currentPlayer = players.get(pID);
@@ -140,6 +178,13 @@ public class GameLogic {
         }
     }
 
+    /**
+     * @param players         All players in the game to print
+     * @param currentPlayerID The id of the current player, who should not be
+     *                        included in the print
+     * @return String A string of what all players besides current player has
+     *         drafted
+     */
     public String generateDraftMessage(ArrayList<Player> players, int currentPlayerID) {
         StringBuilder message = new StringBuilder();
         for (int pID = 0; pID < players.size(); pID++) {
