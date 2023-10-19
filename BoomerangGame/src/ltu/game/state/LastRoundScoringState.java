@@ -12,9 +12,7 @@ import ltu.player.Player;
 /**
  * This class represents the state that calculates and prints the score after
  * the last game round is played and take the players to the final state/end the
- * game
- * Implements
- * the IGameState.
+ * game Implements the IGameState.
  */
 public class LastRoundScoringState implements IGameState {
     /**

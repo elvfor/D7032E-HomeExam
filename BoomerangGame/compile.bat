@@ -15,11 +15,10 @@ if "%errorlevel%"=="0" (
   rem Change the current directory to the "bin" folder
   cd /d "%OUTPUT_DIR%"
   
-  echo To run the game, use: java -cp .;%GSON_JAR% BoomerangGame numPlayers numBots
-  echo To run a client, use: java -cp .;%GSON_JAR% BoomerangGame serverIPAddress
-  rem Run the BoomerangGame with arguments (e.g., 2 and 0)
-
-  java -cp .;%GSON_JAR%; ltu.main.BoomerangGame 1 1
+  echo To run the game,  go to bin directory and use: java -cp .;%GSON_JAR%; ltu.main.BoomerangGame numPlayers numBots
+  echo To run a client, go to bin directory and use: java ltu.main.BoomerangGame serverIPAddress
+  echo Or even easier, run as host using .\runHost.bat
+  echo Run as Client using .\runClient.bat
 ) else (
   echo Compilation failed.
 )

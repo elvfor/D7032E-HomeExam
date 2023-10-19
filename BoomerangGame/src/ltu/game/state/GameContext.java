@@ -9,7 +9,7 @@ import ltu.player.Player;
 /**
  * This class holds the context for a certain game and handles the states of the
  * game. Has
- * abstrasctions of the logic (whioch holds chosen rules and scoring) and all
+ * abstrasctions of the logic (which holds chosen rules and scoring) and all
  * players for this round
  */
 public class GameContext {

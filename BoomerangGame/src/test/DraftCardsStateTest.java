@@ -44,19 +44,28 @@ public class DraftCardsStateTest {
         String[] regions = BoomerangGame.createRegions(version);
         mockGameLogic = new GameLogic(gameRules, scoring, cards, regions);
         draftCardsState = new DraftCardsState();
-        IPlayerActions playerActions = new BotPlayerActionsStandard();
         players = new ArrayList<>();
 
         // Create a GameContext with players
         gameContext = new GameContext(players, null);
+    }
+
+    @Before
+    public void createPlayers() {
+        IPlayerActions playerActions = new BotPlayerActionsStandard();
+
         player1 = new Player(0, playerActions);
         player2 = new Player(1, playerActions);
         player3 = new Player(2, playerActions);
         players.add(player1);
         players.add(player2);
-
         gameContext = new GameContext(players, mockGameLogic);
         gameContext.setCurrentState(draftCardsState);
+
+    }
+
+    @Before
+    public void createMockupTestCards() {
         cards[0] = new AustralianCard("The Bungle Bungles", "A", "Western Australia", 1, "Leaves", "",
                 "Indigenous Culture");
         cards[1] = new AustralianCard("The Pinnacles", "B", "Western Australia", 1, "", "Kangaroos", "Sightseeing");
@@ -68,13 +77,6 @@ public class DraftCardsStateTest {
                 "Sightseeing");
         cards[6] = new AustralianCard("Nitmiluk National Park", "G", "Northern Territory", 4, "Shells", "Platypuses",
                 "");
-        player1.getHand().add(cards[0]);
-        player1.getHand().add(cards[1]);
-        player1.getHand().add(cards[2]);
-        player1.getHand().add(cards[3]);
-        player1.getHand().add(cards[4]);
-        player1.getHand().add(cards[5]);
-        player1.getHand().add(cards[6]);
         cards[7] = new AustralianCard("King's Canyon", "H", "Northern Territory", 4, "", "Koalas", "Swimming");
         cards[8] = new AustralianCard("The Great Barrier Reef", "I", "Queensland", 6, "Wildflowers", "", "Sightseeing");
         cards[9] = new AustralianCard("The Whitsundays", "J", "Queensland", 6, "", "Kangaroos", "Indigenous Culture");
@@ -82,13 +84,7 @@ public class DraftCardsStateTest {
         cards[11] = new AustralianCard("Surfers Paradise", "L", "Queensland", 6, "Wildflowers", "", "Swimming");
         cards[12] = new AustralianCard("Barossa Valley", "M", "South Australia", 3, "", "Koalas", "Bushwalking");
         cards[13] = new AustralianCard("Lake Eyre", "N", "South Australia", 3, "", "Emus", "Swimming");
-        player2.getHand().add(cards[7]);
-        player2.getHand().add(cards[8]);
-        player2.getHand().add(cards[9]);
-        player2.getHand().add(cards[10]);
-        player2.getHand().add(cards[11]);
-        player2.getHand().add(cards[12]);
-        player2.getHand().add(cards[13]);
+
         cards[14] = new AustralianCard("Kangaroo Island", "O", "South Australia", 3, "", "Kangaroos", "Bushwalking");
         cards[15] = new AustralianCard("Mount Gambier", "P", "South Australia", 3, "Wildflowers", "", "Sightseeing");
         cards[16] = new AustralianCard("Blue Mountains", "Q", "New South Whales", 5, "", "Wombats",
@@ -97,6 +93,25 @@ public class DraftCardsStateTest {
         cards[18] = new AustralianCard("Bondi Beach", "S", "New South Whales", 5, "", "Wombats", "Swimming");
         cards[19] = new AustralianCard("Hunter Valley", "T", "New South Whales", 5, "", "Emus", "Bushwalking");
         cards[20] = new AustralianCard("Melbourne", "U", "Victoria", 2, "", "Wombats", "Bushwalking");
+    }
+
+    @Before
+    public void addMockupCardsToPlayers() {
+        IPlayerActions playerActions = new BotPlayerActionsStandard();
+        player1.getHand().add(cards[0]);
+        player1.getHand().add(cards[1]);
+        player1.getHand().add(cards[2]);
+        player1.getHand().add(cards[3]);
+        player1.getHand().add(cards[4]);
+        player1.getHand().add(cards[5]);
+        player1.getHand().add(cards[6]);
+        player2.getHand().add(cards[7]);
+        player2.getHand().add(cards[8]);
+        player2.getHand().add(cards[9]);
+        player2.getHand().add(cards[10]);
+        player2.getHand().add(cards[11]);
+        player2.getHand().add(cards[12]);
+        player2.getHand().add(cards[13]);
 
     }
 
