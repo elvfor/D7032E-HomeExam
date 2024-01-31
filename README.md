@@ -6,7 +6,7 @@ This is for a Home Exam in curse D7032E at LTU.
 
 ## Usage
 
-1. **Compilation and Execution:**
+**Compilation and Execution:**
 
    - Use `compile.bat` to compile the package with a Java compiler.
    - Use `runHost.bat` to run the main class, `BoomerangGame`, as a host.
@@ -16,41 +16,44 @@ This is for a Home Exam in curse D7032E at LTU.
 
    Or run straight from the terminal.
 
-2. **Command-Line Arguments:**
+**Command-Line Arguments:**
 
    - To play as a remote player, provide the IP address as the argument.
    - To play as a local player, specify the number of players and bots as arguments.
 
-3. **Game Modes and Rules:**
+**Game Modes and Rules:**
 
    - Choose the game mode and rules (currently supports "Australia" mode and "Standard" rules).
 
-4. **Player Types:**
+**Player Types:**
 
    - Support for human and bot players.
    - Local players use the console for input/output.
    - Remote players connect via a server.
 
-5. **Customization:**
+**Customization:**
 
    - Extend the package to support additional game modes, rules, or player types.
    - Use `createCards` and `createRegions` methods to add mode-specific cards and regions.
 
-6. **Multiplayer Support:**
+**Multiplayer Support:**
 
    - Play with 2 to 4 players or bots.
    - Set up a server for remote multiplayer, allowing multiple clients to connect.
 
-7. **Gameplay:**
+**Gameplay:**
 
    - Manage game logic, scoring, and player actions.
    - Transition between game states (e.g., initializing a round, player turns).
 
-8. **End of Game:**
+**End of Game:**
 
    - The game ends when specific conditions are met, and the package terminates the game.
 
-9. **Unit Testing:**
+**Unit Testing:**
 
 - To test the game with current tests, run unittest.bat
 - For adding new tests, place them in the 'test' folder and add them to the unittest.bat file for compiling and to run them
+
+**Diagrams:**
+- Diagrams that illustrates the game and design choices/patterns can be found in the "diagrams" folder. 
