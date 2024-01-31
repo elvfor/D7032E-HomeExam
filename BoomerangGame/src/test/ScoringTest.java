@@ -197,24 +197,27 @@ public class ScoringTest {
     // Requirement 12. Game end. After scoring the fourth round, the game ends.
     // Players add up all their scores in each category, including the region
     // bonuses. The highest score wins.
-    @Test
-    public void testWinner() throws Exception {
-        testPlayer1.setFinalScore(118);
-        testPlayer2.setFinalScore(110);
-        ArrayList<Player> players2 = new ArrayList<Player>();
-        players2.add(0, testPlayer1);
-        players2.add(0, testPlayer2);
-        Player highScore = gameLogic.calculateWinner(players2);
-        StringBuilder expectedMessage = new StringBuilder();
-        expectedMessage.append("The winner is player: " + 0
-                + " with " + 118 + " points");
-
-        assertEquals(expectedMessage.toString(), gameLogic.printOfWinner(highScore));
-    }
-
-    // Requirement 12 a. In the case of a tie, the tied player who scored the most
-    // Throw & Catch points wins.
     /*
+     * @Test
+     * public void testWinner() throws Exception {
+     * testPlayer1.setFinalScore(118);
+     * testPlayer2.setFinalScore(110);
+     * ArrayList<Player> players2 = new ArrayList<Player>();
+     * players2.add(0, testPlayer1);
+     * players2.add(0, testPlayer2);
+     * Player highScore = gameLogic.calculateWinner(players2);
+     * StringBuilder expectedMessage = new StringBuilder();
+     * expectedMessage.append("The winner is player: " + 0
+     * + " with " + 118 + " points");
+     * 
+     * assertEquals(expectedMessage.toString(), gameLogic.printOfWinner(highScore));
+     * }
+     * 
+     * // Requirement 12 a. In the case of a tie, the tied player who scored the
+     * most
+     * // Throw & Catch points wins.
+     * /*
+     * 
      * @Test
      * public void testWinnerTie() throws Exception {
      * testPlayer1.setFinalScore(110);

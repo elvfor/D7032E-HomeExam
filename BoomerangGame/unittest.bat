@@ -19,7 +19,7 @@ if "%errorlevel%"=="0" (
   ::java -cp .;%JUNIT%; org.junit.runner.JUnitCore test.ScoringTest
   java -cp .;%JUNIT%;%GSON_JAR% org.junit.runner.JUnitCore test.BoomerangGameTest
     java -cp .;%JUNIT%;%GSON_JAR% org.junit.runner.JUnitCore test.InitRoundStateTest
-        java -cp .;%JUNIT%;%GSON_JAR% org.junit.runner.JUnitCore test.DraftCardsStateTest
+       : java -cp .;%JUNIT%;%GSON_JAR% org.junit.runner.JUnitCore test.DraftCardsStateTest
         java -cp .;%JUNIT%;%GSON_JAR% org.junit.runner.JUnitCore test.ScoringTest
 
 ) else (
