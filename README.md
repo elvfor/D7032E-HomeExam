@@ -1,3 +1,5 @@
+This is for a Home Exam in curse D7032E at LTU. 
+
 # BoomerangGame Readme
 
 **BoomerangGame** is a Java package that provides a framework for a card game. It supports local and remote players, customization of game modes and rules, and multiple player types, including bots. Done in the course D7032E as a Home Exam.
